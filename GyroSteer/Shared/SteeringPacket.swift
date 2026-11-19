@@ -44,6 +44,7 @@ public struct SteeringButtons: OptionSet, Sendable, Hashable {
     public static let worldMap          = SteeringButtons(rawValue: 1 << 22)
     public static let recenter          = SteeringButtons(rawValue: 1 << 23)
     public static let mapZoom           = SteeringButtons(rawValue: 1 << 24)
+    public static let arcadeProfile     = SteeringButtons(rawValue: 1 << 25)
 }
 
 /// Unified 14-Byte Binary Packet Struct

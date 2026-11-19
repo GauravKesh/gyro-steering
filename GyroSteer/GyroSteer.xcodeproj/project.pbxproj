@@ -7,94 +7,94 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0530D431C85445BB95740222 /* Shared/MathUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F47E435F1FE445CA188D2EC /* Shared/MathUtilities.swift */; };
-		07FF49DA000847F382981DD7 /* GyroSteer-Mac/Output/AccessibilityPermissionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40080B3BB3C74B84BA64E9B8 /* GyroSteer-Mac/Output/AccessibilityPermissionHelper.swift */; };
-		0997B01985A94B9E9DDC159A /* GyroSteer-iOS/Transports/TransportProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57732733CAEA4837ACA44497 /* GyroSteer-iOS/Transports/TransportProtocol.swift */; };
-		0E939252F783403AAD87791B /* GyroSteer-iOS/UI/SettingsSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66014EEA6D24F4A8E5C7AE7 /* GyroSteer-iOS/UI/SettingsSheetView.swift */; };
-		1170EB440EC84C7BAEFCE6BE /* Shared/ProtocolConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5267A95630654F99AB68E5CB /* Shared/ProtocolConstants.swift */; };
-		11AAC1FED4354ED0B11BB27F /* GyroSteer-Mac/Output/OutputCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B0D94177EA4315B7FDE5C1 /* GyroSteer-Mac/Output/OutputCoordinator.swift */; };
-		173765D0D9994B0492A132A3 /* GyroSteer-Mac/UI/OscilloscopeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A818AC6D9A74D24B54A6BBB /* GyroSteer-Mac/UI/OscilloscopeView.swift */; };
-		1D65E04FDC05496B8117F5BE /* GyroSteer-Mac/Transports/NWReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3734D104C524FC8A0EA76E8 /* GyroSteer-Mac/Transports/NWReceiver.swift */; };
-		1FF3D0A2922745E988F20A92 /* GyroSteer-Mac/Output/KeyboardMouseEmulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E09F4BB584B48A89CC4F13F /* GyroSteer-Mac/Output/KeyboardMouseEmulator.swift */; };
-		2003928999BD4A95B1B11115 /* GyroSteer-iOS/Core/HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98717A54730846559669283C /* GyroSteer-iOS/Core/HapticManager.swift */; };
-		218593F2170D47D18FF74EA0 /* GyroSteer-iOS/Transports/NWTransmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A84A89E0524CD7A02968B6 /* GyroSteer-iOS/Transports/NWTransmitter.swift */; };
-		32FD5211CF6F467DAC1D76E2 /* Shared/ProtocolConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5267A95630654F99AB68E5CB /* Shared/ProtocolConstants.swift */; };
-		333D8508B67B49E5AE1993F6 /* GyroSteer-Mac/Transports/ReceiverTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FDEE760E6C4137A0C3501A /* GyroSteer-Mac/Transports/ReceiverTransport.swift */; };
-		36AC6EB060054EF0908E7B9B /* GyroSteer-iOS/UI/VerticalSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857C0D4AB2464468B7D0F812 /* GyroSteer-iOS/UI/VerticalSlider.swift */; };
-		3A71452928114740997653B9 /* GyroSteer-Mac/Transports/BLEReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9ED596986114011B77FFC18 /* GyroSteer-Mac/Transports/BLEReceiver.swift */; };
-		3C786232D8AC4C928EC1744E /* Shared/MathUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F47E435F1FE445CA188D2EC /* Shared/MathUtilities.swift */; };
-		496CE95719A347A7B918BAB1 /* GyroSteer-iOS/Core/MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA4A784458A4D30823AD9DE /* GyroSteer-iOS/Core/MotionManager.swift */; };
-		578E5F2BD0EE4FDB83E76BBE /* GyroSteer-Mac/UI/SteeringArcGauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40A450EE8B4BFDB85AAE55 /* GyroSteer-Mac/UI/SteeringArcGauge.swift */; };
-		57E89A7B74F04965940DDBDB /* Shared/SteeringPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532B8A7E473B4C8EBF09C00E /* Shared/SteeringPacket.swift */; };
-		7A2CC8CF19CC45F4AC47B37E /* GyroSteer-Mac/App/GyroSteerMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A31F4E1F4A7467D913F5333 /* GyroSteer-Mac/App/GyroSteerMacApp.swift */; };
-		7F9B1116386E41008C1617F1 /* GyroSteer-Mac/Core/TelemetryHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B97A2BCE3B44138AB4D1B53 /* GyroSteer-Mac/Core/TelemetryHistory.swift */; };
-		8225DB3865D74EF9847B092D /* GyroSteer-iOS/UI/SteeringWheelGauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD60E0A53024F529F2A8ABD /* GyroSteer-iOS/UI/SteeringWheelGauge.swift */; };
-		91E7F52A823A45BCB936C3F3 /* GyroSteer-iOS/Core/TransmissionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C185841CC54E49AD99BDB085 /* GyroSteer-iOS/Core/TransmissionCoordinator.swift */; };
-		981ED46861874230A308E688 /* GyroSteer-iOS/App/GyroSteerIOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6F55176425449CBF261B2D /* GyroSteer-iOS/App/GyroSteerIOSApp.swift */; };
-		AEBDFAE6F8744AF69061670E /* GyroSteer-Mac/App/AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43E9575D45841D7A1A9D6CA /* GyroSteer-Mac/App/AppDelegate.swift */; };
-		B5CBA91A19324EA8A1DFCF50 /* GyroSteer-Mac/UI/MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A386F1E3674009BE95D98E /* GyroSteer-Mac/UI/MenuBarView.swift */; };
-		D5A6AA623DBC4B33A58A6D4C /* GyroSteer-Mac/Output/VirtualGamepadDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FE1582024A47179A30F941 /* GyroSteer-Mac/Output/VirtualGamepadDriver.swift */; };
-		DCAF604C3ABC4880B86A3A24 /* GyroSteer-Mac/Core/TransportArbiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F1458A0474FFBA29BD824 /* GyroSteer-Mac/Core/TransportArbiter.swift */; };
-		DF498536F3354A2E970FC263 /* GyroSteer-iOS/Transports/BLETransmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02C5DB4CD354194A1A7A687 /* GyroSteer-iOS/Transports/BLETransmitter.swift */; };
-		ECFBE0D864A74B0DB5C5D6DC /* GyroSteer-Mac/Output/InputInjectorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92DDA4168C5646B0AE85CF1B /* GyroSteer-Mac/Output/InputInjectorProtocol.swift */; };
-		F36CA88DF51C40F09F806024 /* GyroSteer-iOS/UI/GameHUDProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CCF00AF8D124F3EB963317C /* GyroSteer-iOS/UI/GameHUDProfile.swift */; };
-		F4DB5438581442978C8EFB5B /* GyroSteer-iOS/App/AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6989662DA942278B0F386C /* GyroSteer-iOS/App/AppDelegate.swift */; };
-		F6C5F690A5F34F87B661773F /* Shared/SteeringPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532B8A7E473B4C8EBF09C00E /* Shared/SteeringPacket.swift */; };
-		F760456DB14F409FBD23797C /* GyroSteer-Mac/Core/EventLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4795013EC21743CC8B3AD0F8 /* GyroSteer-Mac/Core/EventLogger.swift */; };
-		FA9BD024DEAF4A2985F805F7 /* GyroSteer-iOS/UI/CockpitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9859CBA26EF5409CB98C6AC4 /* GyroSteer-iOS/UI/CockpitView.swift */; };
-		FF402B5B0F9344918513885F /* GyroSteer-Mac/UI/DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2772BFB3F8EB4CEBA66CDCA6 /* GyroSteer-Mac/UI/DashboardView.swift */; };
+		0126295090A844308F619D36 /* GyroSteer-Mac/Core/EventLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99426EB80B304E5889F1A456 /* GyroSteer-Mac/Core/EventLogger.swift */; };
+		1512715D1DD84C43913FBA13 /* GyroSteer-iOS/UI/SettingsSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C1B04A90FC64F61B320CBC8 /* GyroSteer-iOS/UI/SettingsSheetView.swift */; };
+		2DC5AA084DF2417AAB61F992 /* GyroSteer-iOS/Core/HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4444F0E6C4114E42BE04EB7F /* GyroSteer-iOS/Core/HapticManager.swift */; };
+		307BA6B6E45C42A199978433 /* GyroSteer-Mac/Transports/ReceiverTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788E91336DE742E59BC942AF /* GyroSteer-Mac/Transports/ReceiverTransport.swift */; };
+		3949052CFC1342C2AB382E69 /* GyroSteer-Mac/Output/InputInjectorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021510555CF4B8881495919 /* GyroSteer-Mac/Output/InputInjectorProtocol.swift */; };
+		41B0FFC0F79143238FB85025 /* GyroSteer-Mac/App/GyroSteerMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF9AE6CC19049C5A5E6F9EA /* GyroSteer-Mac/App/GyroSteerMacApp.swift */; };
+		45F86FF51D5F474580008E8D /* GyroSteer-Mac/Core/TelemetryHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FABD13C4624676AD42C1FB /* GyroSteer-Mac/Core/TelemetryHistory.swift */; };
+		4882C01F7A5244A085EF9857 /* GyroSteer-iOS/Core/MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC29B575903B4DC28B9CB164 /* GyroSteer-iOS/Core/MotionManager.swift */; };
+		4A2F8FFFCB804933B4DDA3FD /* Shared/MathUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36333090BAE247F2AC13FB59 /* Shared/MathUtilities.swift */; };
+		4DABC1CB00B247ADBDF10C29 /* GyroSteer-iOS/Transports/NWTransmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10528093821D4F86A98F8D05 /* GyroSteer-iOS/Transports/NWTransmitter.swift */; };
+		5096CE2A049C465AB3B925A6 /* GyroSteer-iOS/UI/GameHUDProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A87F1C3EE04919BBE707A9 /* GyroSteer-iOS/UI/GameHUDProfile.swift */; };
+		50C8B3B295444F13B72EA573 /* GyroSteer-iOS/Transports/TransportProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EF4FC761D54D019EDCFDF8 /* GyroSteer-iOS/Transports/TransportProtocol.swift */; };
+		53C89535A8514AA9A68F163B /* GyroSteer-Mac/Transports/NWReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C3AF4D533F4B50B9D08CAF /* GyroSteer-Mac/Transports/NWReceiver.swift */; };
+		5734E06C38B344A6983DF978 /* GyroSteer-iOS/UI/VerticalSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70D592404B744EFA543FA30 /* GyroSteer-iOS/UI/VerticalSlider.swift */; };
+		57D6E8A151474E17BF97E5F7 /* GyroSteer-Mac/Output/VirtualGamepadDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881E7352F5D34685AA082434 /* GyroSteer-Mac/Output/VirtualGamepadDriver.swift */; };
+		667641A4B9C14DC885C32A07 /* GyroSteer-Mac/Output/KeyboardMouseEmulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9F061996C854069928AA481 /* GyroSteer-Mac/Output/KeyboardMouseEmulator.swift */; };
+		67F8BB3746DC48A0B1E2AF87 /* Shared/SteeringPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34898AEB2A1E4111A488E156 /* Shared/SteeringPacket.swift */; };
+		6C47C77E8CD448849E31C7D1 /* GyroSteer-Mac/Output/AccessibilityPermissionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DE34E72F144EBAB57656F9 /* GyroSteer-Mac/Output/AccessibilityPermissionHelper.swift */; };
+		7AFD488A134444AFB7726460 /* GyroSteer-Mac/UI/SteeringArcGauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC5AAE559A604FAA8AD80FB0 /* GyroSteer-Mac/UI/SteeringArcGauge.swift */; };
+		847AC53B37A147C2B520EDF2 /* GyroSteer-Mac/Output/OutputCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED59E2AD4774976BF1940A4 /* GyroSteer-Mac/Output/OutputCoordinator.swift */; };
+		8E4F647E78CF43B29390A894 /* GyroSteer-Mac/UI/MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424A47B389D4D129B5157C1 /* GyroSteer-Mac/UI/MenuBarView.swift */; };
+		90777FE6380C41B483448D67 /* Shared/SteeringPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34898AEB2A1E4111A488E156 /* Shared/SteeringPacket.swift */; };
+		9209F93A7B0A43F7ADF599F3 /* GyroSteer-iOS/UI/CockpitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494F3CE2752A4F84BC83D863 /* GyroSteer-iOS/UI/CockpitView.swift */; };
+		9F3BC8A1D3CB4724BAB023E1 /* GyroSteer-iOS/UI/SteeringWheelGauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = B823755F0F7A4AF38B009B87 /* GyroSteer-iOS/UI/SteeringWheelGauge.swift */; };
+		A1243ACF8DE541898DEA75C8 /* GyroSteer-iOS/App/AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F6EABF15BA4BCABF4443A6 /* GyroSteer-iOS/App/AppDelegate.swift */; };
+		BC2BF10288E641CEB0E070FD /* GyroSteer-Mac/UI/OscilloscopeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A39D2D444F24C598966FF64 /* GyroSteer-Mac/UI/OscilloscopeView.swift */; };
+		C69DEA2C5EBE422783D3DF92 /* GyroSteer-iOS/Core/TransmissionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA534FF1215D4F9BB2F75DE6 /* GyroSteer-iOS/Core/TransmissionCoordinator.swift */; };
+		CF5250B9922F4DC8B92D1E5B /* Shared/MathUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36333090BAE247F2AC13FB59 /* Shared/MathUtilities.swift */; };
+		CF9BED25FC16405D8C72AE01 /* GyroSteer-Mac/UI/DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65076671C4043E790C1D7FA /* GyroSteer-Mac/UI/DashboardView.swift */; };
+		D2271C7438B04FD0B7841553 /* GyroSteer-iOS/Transports/BLETransmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A9285518E943909D1C4D97 /* GyroSteer-iOS/Transports/BLETransmitter.swift */; };
+		D254AF8392C94BB2B128717A /* GyroSteer-Mac/App/AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0999BC7F03419F8C2F8A11 /* GyroSteer-Mac/App/AppDelegate.swift */; };
+		D522152DB63545F085EEA5E7 /* Shared/ProtocolConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DC9E356BBD483A8E3D42BA /* Shared/ProtocolConstants.swift */; };
+		E9C05D9B3A744571BEB78BF5 /* GyroSteer-Mac/Core/TransportArbiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82F2EC3734F4634BE59E334 /* GyroSteer-Mac/Core/TransportArbiter.swift */; };
+		F255A39375B94615A21CB2F0 /* GyroSteer-iOS/App/GyroSteerIOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC90122F15444EB87CD31D5 /* GyroSteer-iOS/App/GyroSteerIOSApp.swift */; };
+		F7645B8700BC452AB565519A /* GyroSteer-Mac/Transports/BLEReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4CA4D702264F718C6A87EC /* GyroSteer-Mac/Transports/BLEReceiver.swift */; };
+		F8CD8A3577814D68B8C3C730 /* Shared/ProtocolConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DC9E356BBD483A8E3D42BA /* Shared/ProtocolConstants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0F47E435F1FE445CA188D2EC /* Shared/MathUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/MathUtilities.swift; sourceTree = SOURCE_ROOT; };
-		12A386F1E3674009BE95D98E /* GyroSteer-Mac/UI/MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/UI/MenuBarView.swift"; sourceTree = SOURCE_ROOT; };
-		1D6989662DA942278B0F386C /* GyroSteer-iOS/App/AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/App/AppDelegate.swift"; sourceTree = SOURCE_ROOT; };
-		1E09F4BB584B48A89CC4F13F /* GyroSteer-Mac/Output/KeyboardMouseEmulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Output/KeyboardMouseEmulator.swift"; sourceTree = SOURCE_ROOT; };
-		1E2F1458A0474FFBA29BD824 /* GyroSteer-Mac/Core/TransportArbiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Core/TransportArbiter.swift"; sourceTree = SOURCE_ROOT; };
-		22FDEE760E6C4137A0C3501A /* GyroSteer-Mac/Transports/ReceiverTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Transports/ReceiverTransport.swift"; sourceTree = SOURCE_ROOT; };
-		2772BFB3F8EB4CEBA66CDCA6 /* GyroSteer-Mac/UI/DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/UI/DashboardView.swift"; sourceTree = SOURCE_ROOT; };
-		3CCF00AF8D124F3EB963317C /* GyroSteer-iOS/UI/GameHUDProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/UI/GameHUDProfile.swift"; sourceTree = SOURCE_ROOT; };
-		3F6F55176425449CBF261B2D /* GyroSteer-iOS/App/GyroSteerIOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/App/GyroSteerIOSApp.swift"; sourceTree = SOURCE_ROOT; };
-		40080B3BB3C74B84BA64E9B8 /* GyroSteer-Mac/Output/AccessibilityPermissionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Output/AccessibilityPermissionHelper.swift"; sourceTree = SOURCE_ROOT; };
-		4795013EC21743CC8B3AD0F8 /* GyroSteer-Mac/Core/EventLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Core/EventLogger.swift"; sourceTree = SOURCE_ROOT; };
-		4BD60E0A53024F529F2A8ABD /* GyroSteer-iOS/UI/SteeringWheelGauge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/UI/SteeringWheelGauge.swift"; sourceTree = SOURCE_ROOT; };
-		5267A95630654F99AB68E5CB /* Shared/ProtocolConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/ProtocolConstants.swift; sourceTree = SOURCE_ROOT; };
-		532B8A7E473B4C8EBF09C00E /* Shared/SteeringPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/SteeringPacket.swift; sourceTree = SOURCE_ROOT; };
-		57732733CAEA4837ACA44497 /* GyroSteer-iOS/Transports/TransportProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/Transports/TransportProtocol.swift"; sourceTree = SOURCE_ROOT; };
-		5A31F4E1F4A7467D913F5333 /* GyroSteer-Mac/App/GyroSteerMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/App/GyroSteerMacApp.swift"; sourceTree = SOURCE_ROOT; };
-		5C7C53D00B574B68ACC058D1 /* GyroSteer-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GyroSteer-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		66A84A89E0524CD7A02968B6 /* GyroSteer-iOS/Transports/NWTransmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/Transports/NWTransmitter.swift"; sourceTree = SOURCE_ROOT; };
-		6B97A2BCE3B44138AB4D1B53 /* GyroSteer-Mac/Core/TelemetryHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Core/TelemetryHistory.swift"; sourceTree = SOURCE_ROOT; };
-		6BA4A784458A4D30823AD9DE /* GyroSteer-iOS/Core/MotionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/Core/MotionManager.swift"; sourceTree = SOURCE_ROOT; };
-		7F5A3442661241F3BEF29A04 /* GyroSteer-Mac/Resources/Info.plist */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Resources/Info.plist"; sourceTree = SOURCE_ROOT; };
-		857C0D4AB2464468B7D0F812 /* GyroSteer-iOS/UI/VerticalSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/UI/VerticalSlider.swift"; sourceTree = SOURCE_ROOT; };
-		8FA4FCB3DE674B5D86A90A3E /* GyroSteer-iOS/Resources/Info.plist */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/Resources/Info.plist"; sourceTree = SOURCE_ROOT; };
-		92DDA4168C5646B0AE85CF1B /* GyroSteer-Mac/Output/InputInjectorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Output/InputInjectorProtocol.swift"; sourceTree = SOURCE_ROOT; };
-		93FE1582024A47179A30F941 /* GyroSteer-Mac/Output/VirtualGamepadDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Output/VirtualGamepadDriver.swift"; sourceTree = SOURCE_ROOT; };
-		9859CBA26EF5409CB98C6AC4 /* GyroSteer-iOS/UI/CockpitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/UI/CockpitView.swift"; sourceTree = SOURCE_ROOT; };
-		98717A54730846559669283C /* GyroSteer-iOS/Core/HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/Core/HapticManager.swift"; sourceTree = SOURCE_ROOT; };
-		9A818AC6D9A74D24B54A6BBB /* GyroSteer-Mac/UI/OscilloscopeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/UI/OscilloscopeView.swift"; sourceTree = SOURCE_ROOT; };
-		A02C5DB4CD354194A1A7A687 /* GyroSteer-iOS/Transports/BLETransmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/Transports/BLETransmitter.swift"; sourceTree = SOURCE_ROOT; };
-		A66014EEA6D24F4A8E5C7AE7 /* GyroSteer-iOS/UI/SettingsSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/UI/SettingsSheetView.swift"; sourceTree = SOURCE_ROOT; };
-		AFB1540D1A7F4CEF95EE92CA /* GyroSteer-Mac/Resources/GyroSteer-Mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Resources/GyroSteer-Mac.entitlements"; sourceTree = SOURCE_ROOT; };
-		C185841CC54E49AD99BDB085 /* GyroSteer-iOS/Core/TransmissionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/Core/TransmissionCoordinator.swift"; sourceTree = SOURCE_ROOT; };
-		CC40A450EE8B4BFDB85AAE55 /* GyroSteer-Mac/UI/SteeringArcGauge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/UI/SteeringArcGauge.swift"; sourceTree = SOURCE_ROOT; };
-		D362675167F94FAE803F5A7D /* GyroSteer-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GyroSteer-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D3734D104C524FC8A0EA76E8 /* GyroSteer-Mac/Transports/NWReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Transports/NWReceiver.swift"; sourceTree = SOURCE_ROOT; };
-		D9ED596986114011B77FFC18 /* GyroSteer-Mac/Transports/BLEReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Transports/BLEReceiver.swift"; sourceTree = SOURCE_ROOT; };
-		E43E9575D45841D7A1A9D6CA /* GyroSteer-Mac/App/AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/App/AppDelegate.swift"; sourceTree = SOURCE_ROOT; };
-		E9B0D94177EA4315B7FDE5C1 /* GyroSteer-Mac/Output/OutputCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Output/OutputCoordinator.swift"; sourceTree = SOURCE_ROOT; };
+		0A0999BC7F03419F8C2F8A11 /* GyroSteer-Mac/App/AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/App/AppDelegate.swift"; sourceTree = SOURCE_ROOT; };
+		0DC116C8224143E58ECD7929 /* GyroSteer-Mac/Resources/Info.plist */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Resources/Info.plist"; sourceTree = SOURCE_ROOT; };
+		10528093821D4F86A98F8D05 /* GyroSteer-iOS/Transports/NWTransmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/Transports/NWTransmitter.swift"; sourceTree = SOURCE_ROOT; };
+		15A87F1C3EE04919BBE707A9 /* GyroSteer-iOS/UI/GameHUDProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/UI/GameHUDProfile.swift"; sourceTree = SOURCE_ROOT; };
+		1ED59E2AD4774976BF1940A4 /* GyroSteer-Mac/Output/OutputCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Output/OutputCoordinator.swift"; sourceTree = SOURCE_ROOT; };
+		20EF4FC761D54D019EDCFDF8 /* GyroSteer-iOS/Transports/TransportProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/Transports/TransportProtocol.swift"; sourceTree = SOURCE_ROOT; };
+		2C4CA4D702264F718C6A87EC /* GyroSteer-Mac/Transports/BLEReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Transports/BLEReceiver.swift"; sourceTree = SOURCE_ROOT; };
+		34898AEB2A1E4111A488E156 /* Shared/SteeringPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/SteeringPacket.swift; sourceTree = SOURCE_ROOT; };
+		36333090BAE247F2AC13FB59 /* Shared/MathUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/MathUtilities.swift; sourceTree = SOURCE_ROOT; };
+		4444F0E6C4114E42BE04EB7F /* GyroSteer-iOS/Core/HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/Core/HapticManager.swift"; sourceTree = SOURCE_ROOT; };
+		494F3CE2752A4F84BC83D863 /* GyroSteer-iOS/UI/CockpitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/UI/CockpitView.swift"; sourceTree = SOURCE_ROOT; };
+		4A39D2D444F24C598966FF64 /* GyroSteer-Mac/UI/OscilloscopeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/UI/OscilloscopeView.swift"; sourceTree = SOURCE_ROOT; };
+		4C5CC02F9DEF4A63A498C62E /* GyroSteer-iOS/Resources/Info.plist */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/Resources/Info.plist"; sourceTree = SOURCE_ROOT; };
+		55DE34E72F144EBAB57656F9 /* GyroSteer-Mac/Output/AccessibilityPermissionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Output/AccessibilityPermissionHelper.swift"; sourceTree = SOURCE_ROOT; };
+		5C1B04A90FC64F61B320CBC8 /* GyroSteer-iOS/UI/SettingsSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/UI/SettingsSheetView.swift"; sourceTree = SOURCE_ROOT; };
+		6EC90122F15444EB87CD31D5 /* GyroSteer-iOS/App/GyroSteerIOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/App/GyroSteerIOSApp.swift"; sourceTree = SOURCE_ROOT; };
+		788E91336DE742E59BC942AF /* GyroSteer-Mac/Transports/ReceiverTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Transports/ReceiverTransport.swift"; sourceTree = SOURCE_ROOT; };
+		7A01295F8E5849A2989C663C /* GyroSteer-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GyroSteer-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8424A47B389D4D129B5157C1 /* GyroSteer-Mac/UI/MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/UI/MenuBarView.swift"; sourceTree = SOURCE_ROOT; };
+		86FABD13C4624676AD42C1FB /* GyroSteer-Mac/Core/TelemetryHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Core/TelemetryHistory.swift"; sourceTree = SOURCE_ROOT; };
+		881E7352F5D34685AA082434 /* GyroSteer-Mac/Output/VirtualGamepadDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Output/VirtualGamepadDriver.swift"; sourceTree = SOURCE_ROOT; };
+		89F6EABF15BA4BCABF4443A6 /* GyroSteer-iOS/App/AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/App/AppDelegate.swift"; sourceTree = SOURCE_ROOT; };
+		8A5A86B1CE3B4E5DB8FA1301 /* GyroSteer-Mac/Resources/GyroSteer-Mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Resources/GyroSteer-Mac.entitlements"; sourceTree = SOURCE_ROOT; };
+		99426EB80B304E5889F1A456 /* GyroSteer-Mac/Core/EventLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Core/EventLogger.swift"; sourceTree = SOURCE_ROOT; };
+		A9F061996C854069928AA481 /* GyroSteer-Mac/Output/KeyboardMouseEmulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Output/KeyboardMouseEmulator.swift"; sourceTree = SOURCE_ROOT; };
+		AC5AAE559A604FAA8AD80FB0 /* GyroSteer-Mac/UI/SteeringArcGauge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/UI/SteeringArcGauge.swift"; sourceTree = SOURCE_ROOT; };
+		B3DC9E356BBD483A8E3D42BA /* Shared/ProtocolConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/ProtocolConstants.swift; sourceTree = SOURCE_ROOT; };
+		B65076671C4043E790C1D7FA /* GyroSteer-Mac/UI/DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/UI/DashboardView.swift"; sourceTree = SOURCE_ROOT; };
+		B823755F0F7A4AF38B009B87 /* GyroSteer-iOS/UI/SteeringWheelGauge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/UI/SteeringWheelGauge.swift"; sourceTree = SOURCE_ROOT; };
+		C021510555CF4B8881495919 /* GyroSteer-Mac/Output/InputInjectorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Output/InputInjectorProtocol.swift"; sourceTree = SOURCE_ROOT; };
+		C6A9285518E943909D1C4D97 /* GyroSteer-iOS/Transports/BLETransmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/Transports/BLETransmitter.swift"; sourceTree = SOURCE_ROOT; };
+		D3C3AF4D533F4B50B9D08CAF /* GyroSteer-Mac/Transports/NWReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Transports/NWReceiver.swift"; sourceTree = SOURCE_ROOT; };
+		DC29B575903B4DC28B9CB164 /* GyroSteer-iOS/Core/MotionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/Core/MotionManager.swift"; sourceTree = SOURCE_ROOT; };
+		DDF9AE6CC19049C5A5E6F9EA /* GyroSteer-Mac/App/GyroSteerMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/App/GyroSteerMacApp.swift"; sourceTree = SOURCE_ROOT; };
+		E70D592404B744EFA543FA30 /* GyroSteer-iOS/UI/VerticalSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/UI/VerticalSlider.swift"; sourceTree = SOURCE_ROOT; };
+		EA4FD4704E5540BDBBB0BC50 /* GyroSteer-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GyroSteer-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA534FF1215D4F9BB2F75DE6 /* GyroSteer-iOS/Core/TransmissionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-iOS/Core/TransmissionCoordinator.swift"; sourceTree = SOURCE_ROOT; };
+		F82F2EC3734F4634BE59E334 /* GyroSteer-Mac/Core/TransportArbiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GyroSteer-Mac/Core/TransportArbiter.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		AE1F59877FB9442F9E4A085D /* Frameworks */ = {
+		079D0D0C527E4B329BA644AD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B2179344584F4F1FB0650A1B /* Frameworks */ = {
+		A9C7808E407F4FCCA79968C4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -104,68 +104,68 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7B7DEE2B66874815AFC0BA16 /* Products */ = {
+		1BF795D3308F4968A22E40F0 = {
 			isa = PBXGroup;
 			children = (
-				D362675167F94FAE803F5A7D /* GyroSteer-Mac.app */,
-				5C7C53D00B574B68ACC058D1 /* GyroSteer-iOS.app */,
+				B3DC9E356BBD483A8E3D42BA /* Shared/ProtocolConstants.swift */,
+				34898AEB2A1E4111A488E156 /* Shared/SteeringPacket.swift */,
+				36333090BAE247F2AC13FB59 /* Shared/MathUtilities.swift */,
+				B65076671C4043E790C1D7FA /* GyroSteer-Mac/UI/DashboardView.swift */,
+				4A39D2D444F24C598966FF64 /* GyroSteer-Mac/UI/OscilloscopeView.swift */,
+				8424A47B389D4D129B5157C1 /* GyroSteer-Mac/UI/MenuBarView.swift */,
+				AC5AAE559A604FAA8AD80FB0 /* GyroSteer-Mac/UI/SteeringArcGauge.swift */,
+				99426EB80B304E5889F1A456 /* GyroSteer-Mac/Core/EventLogger.swift */,
+				F82F2EC3734F4634BE59E334 /* GyroSteer-Mac/Core/TransportArbiter.swift */,
+				86FABD13C4624676AD42C1FB /* GyroSteer-Mac/Core/TelemetryHistory.swift */,
+				0A0999BC7F03419F8C2F8A11 /* GyroSteer-Mac/App/AppDelegate.swift */,
+				DDF9AE6CC19049C5A5E6F9EA /* GyroSteer-Mac/App/GyroSteerMacApp.swift */,
+				D3C3AF4D533F4B50B9D08CAF /* GyroSteer-Mac/Transports/NWReceiver.swift */,
+				2C4CA4D702264F718C6A87EC /* GyroSteer-Mac/Transports/BLEReceiver.swift */,
+				788E91336DE742E59BC942AF /* GyroSteer-Mac/Transports/ReceiverTransport.swift */,
+				1ED59E2AD4774976BF1940A4 /* GyroSteer-Mac/Output/OutputCoordinator.swift */,
+				55DE34E72F144EBAB57656F9 /* GyroSteer-Mac/Output/AccessibilityPermissionHelper.swift */,
+				C021510555CF4B8881495919 /* GyroSteer-Mac/Output/InputInjectorProtocol.swift */,
+				A9F061996C854069928AA481 /* GyroSteer-Mac/Output/KeyboardMouseEmulator.swift */,
+				881E7352F5D34685AA082434 /* GyroSteer-Mac/Output/VirtualGamepadDriver.swift */,
+				15A87F1C3EE04919BBE707A9 /* GyroSteer-iOS/UI/GameHUDProfile.swift */,
+				B823755F0F7A4AF38B009B87 /* GyroSteer-iOS/UI/SteeringWheelGauge.swift */,
+				494F3CE2752A4F84BC83D863 /* GyroSteer-iOS/UI/CockpitView.swift */,
+				E70D592404B744EFA543FA30 /* GyroSteer-iOS/UI/VerticalSlider.swift */,
+				5C1B04A90FC64F61B320CBC8 /* GyroSteer-iOS/UI/SettingsSheetView.swift */,
+				EA534FF1215D4F9BB2F75DE6 /* GyroSteer-iOS/Core/TransmissionCoordinator.swift */,
+				4444F0E6C4114E42BE04EB7F /* GyroSteer-iOS/Core/HapticManager.swift */,
+				DC29B575903B4DC28B9CB164 /* GyroSteer-iOS/Core/MotionManager.swift */,
+				6EC90122F15444EB87CD31D5 /* GyroSteer-iOS/App/GyroSteerIOSApp.swift */,
+				89F6EABF15BA4BCABF4443A6 /* GyroSteer-iOS/App/AppDelegate.swift */,
+				10528093821D4F86A98F8D05 /* GyroSteer-iOS/Transports/NWTransmitter.swift */,
+				20EF4FC761D54D019EDCFDF8 /* GyroSteer-iOS/Transports/TransportProtocol.swift */,
+				C6A9285518E943909D1C4D97 /* GyroSteer-iOS/Transports/BLETransmitter.swift */,
+				0DC116C8224143E58ECD7929 /* GyroSteer-Mac/Resources/Info.plist */,
+				8A5A86B1CE3B4E5DB8FA1301 /* GyroSteer-Mac/Resources/GyroSteer-Mac.entitlements */,
+				4C5CC02F9DEF4A63A498C62E /* GyroSteer-iOS/Resources/Info.plist */,
+				FB28B5EAB7D4436A872668C6 /* Products */,
 			);
-			name = Products;
 			sourceTree = "<group>";
 		};
-		C434A8BED84043B5BAD0EF41 = {
+		FB28B5EAB7D4436A872668C6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5267A95630654F99AB68E5CB /* Shared/ProtocolConstants.swift */,
-				532B8A7E473B4C8EBF09C00E /* Shared/SteeringPacket.swift */,
-				0F47E435F1FE445CA188D2EC /* Shared/MathUtilities.swift */,
-				2772BFB3F8EB4CEBA66CDCA6 /* GyroSteer-Mac/UI/DashboardView.swift */,
-				9A818AC6D9A74D24B54A6BBB /* GyroSteer-Mac/UI/OscilloscopeView.swift */,
-				12A386F1E3674009BE95D98E /* GyroSteer-Mac/UI/MenuBarView.swift */,
-				CC40A450EE8B4BFDB85AAE55 /* GyroSteer-Mac/UI/SteeringArcGauge.swift */,
-				4795013EC21743CC8B3AD0F8 /* GyroSteer-Mac/Core/EventLogger.swift */,
-				1E2F1458A0474FFBA29BD824 /* GyroSteer-Mac/Core/TransportArbiter.swift */,
-				6B97A2BCE3B44138AB4D1B53 /* GyroSteer-Mac/Core/TelemetryHistory.swift */,
-				E43E9575D45841D7A1A9D6CA /* GyroSteer-Mac/App/AppDelegate.swift */,
-				5A31F4E1F4A7467D913F5333 /* GyroSteer-Mac/App/GyroSteerMacApp.swift */,
-				D3734D104C524FC8A0EA76E8 /* GyroSteer-Mac/Transports/NWReceiver.swift */,
-				D9ED596986114011B77FFC18 /* GyroSteer-Mac/Transports/BLEReceiver.swift */,
-				22FDEE760E6C4137A0C3501A /* GyroSteer-Mac/Transports/ReceiverTransport.swift */,
-				E9B0D94177EA4315B7FDE5C1 /* GyroSteer-Mac/Output/OutputCoordinator.swift */,
-				40080B3BB3C74B84BA64E9B8 /* GyroSteer-Mac/Output/AccessibilityPermissionHelper.swift */,
-				92DDA4168C5646B0AE85CF1B /* GyroSteer-Mac/Output/InputInjectorProtocol.swift */,
-				1E09F4BB584B48A89CC4F13F /* GyroSteer-Mac/Output/KeyboardMouseEmulator.swift */,
-				93FE1582024A47179A30F941 /* GyroSteer-Mac/Output/VirtualGamepadDriver.swift */,
-				3CCF00AF8D124F3EB963317C /* GyroSteer-iOS/UI/GameHUDProfile.swift */,
-				4BD60E0A53024F529F2A8ABD /* GyroSteer-iOS/UI/SteeringWheelGauge.swift */,
-				9859CBA26EF5409CB98C6AC4 /* GyroSteer-iOS/UI/CockpitView.swift */,
-				857C0D4AB2464468B7D0F812 /* GyroSteer-iOS/UI/VerticalSlider.swift */,
-				A66014EEA6D24F4A8E5C7AE7 /* GyroSteer-iOS/UI/SettingsSheetView.swift */,
-				C185841CC54E49AD99BDB085 /* GyroSteer-iOS/Core/TransmissionCoordinator.swift */,
-				98717A54730846559669283C /* GyroSteer-iOS/Core/HapticManager.swift */,
-				6BA4A784458A4D30823AD9DE /* GyroSteer-iOS/Core/MotionManager.swift */,
-				3F6F55176425449CBF261B2D /* GyroSteer-iOS/App/GyroSteerIOSApp.swift */,
-				1D6989662DA942278B0F386C /* GyroSteer-iOS/App/AppDelegate.swift */,
-				66A84A89E0524CD7A02968B6 /* GyroSteer-iOS/Transports/NWTransmitter.swift */,
-				57732733CAEA4837ACA44497 /* GyroSteer-iOS/Transports/TransportProtocol.swift */,
-				A02C5DB4CD354194A1A7A687 /* GyroSteer-iOS/Transports/BLETransmitter.swift */,
-				7F5A3442661241F3BEF29A04 /* GyroSteer-Mac/Resources/Info.plist */,
-				AFB1540D1A7F4CEF95EE92CA /* GyroSteer-Mac/Resources/GyroSteer-Mac.entitlements */,
-				8FA4FCB3DE674B5D86A90A3E /* GyroSteer-iOS/Resources/Info.plist */,
-				7B7DEE2B66874815AFC0BA16 /* Products */,
+				7A01295F8E5849A2989C663C /* GyroSteer-Mac.app */,
+				EA4FD4704E5540BDBBB0BC50 /* GyroSteer-iOS.app */,
 			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		246F30F69E884DEAB8A0BFA9 /* GyroSteer-Mac */ = {
+		81CA81B63EB54CF1ACC78160 /* GyroSteer-Mac */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E5217816C39E41128084B9D3 /* Build configuration list for PBXNativeTarget "GyroSteer-Mac" */;
+			buildConfigurationList = 6FD4B3473DF243CA84945EFF /* Build configuration list for PBXNativeTarget "GyroSteer-Mac" */;
 			buildPhases = (
-				D0C8A8502D824FCC80BB09EB /* Sources */,
-				AE1F59877FB9442F9E4A085D /* Frameworks */,
-				12B3EEE01BC94E12BC0481F2 /* Resources */,
+				E8ACA368A056428F8D20F8D4 /* Sources */,
+				079D0D0C527E4B329BA644AD /* Frameworks */,
+				4853D9F089DA4337B6537ACA /* Resources */,
 			);
 			buildRules = (
 			);
@@ -173,16 +173,16 @@
 			);
 			name = "GyroSteer-Mac";
 			productName = "GyroSteer-Mac";
-			productReference = D362675167F94FAE803F5A7D /* GyroSteer-Mac.app */;
+			productReference = 7A01295F8E5849A2989C663C /* GyroSteer-Mac.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4FE2167945984699B6DDBEDC /* GyroSteer-iOS */ = {
+		C59D0D46BBD84BABA8F7274A /* GyroSteer-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B8C1CEF823F44DDBAD2FF1D2 /* Build configuration list for PBXNativeTarget "GyroSteer-iOS" */;
+			buildConfigurationList = B2B93D8FA8314C4BB86A80CF /* Build configuration list for PBXNativeTarget "GyroSteer-iOS" */;
 			buildPhases = (
-				A789D1701D204BCD92983328 /* Sources */,
-				B2179344584F4F1FB0650A1B /* Frameworks */,
-				0E2AA7B442BC4FB8A76AC8F3 /* Resources */,
+				1291EEC250B740EA85DB3127 /* Sources */,
+				A9C7808E407F4FCCA79968C4 /* Frameworks */,
+				9044CBF6F6784E749BE89887 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -190,19 +190,19 @@
 			);
 			name = "GyroSteer-iOS";
 			productName = "GyroSteer-iOS";
-			productReference = 5C7C53D00B574B68ACC058D1 /* GyroSteer-iOS.app */;
+			productReference = EA4FD4704E5540BDBBB0BC50 /* GyroSteer-iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		68961CCE198F4F97B1A75799 /* Project object */ = {
+		2B75F1C8888143B79898710E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
 			};
-			buildConfigurationList = D43D26BAF3D641C1A1AA9C2A /* Build configuration list for PBXProject "GyroSteer" */;
+			buildConfigurationList = 7F005A7E79E24C17838DE750 /* Build configuration list for PBXProject "GyroSteer" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -210,26 +210,26 @@
 				en,
 				Base,
 			);
-			mainGroup = C434A8BED84043B5BAD0EF41;
-			productRefGroup = 7B7DEE2B66874815AFC0BA16 /* Products */;
+			mainGroup = 1BF795D3308F4968A22E40F0;
+			productRefGroup = FB28B5EAB7D4436A872668C6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				246F30F69E884DEAB8A0BFA9 /* GyroSteer-Mac */,
-				4FE2167945984699B6DDBEDC /* GyroSteer-iOS */,
+				81CA81B63EB54CF1ACC78160 /* GyroSteer-Mac */,
+				C59D0D46BBD84BABA8F7274A /* GyroSteer-iOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		0E2AA7B442BC4FB8A76AC8F3 /* Resources */ = {
+		4853D9F089DA4337B6537ACA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		12B3EEE01BC94E12BC0481F2 /* Resources */ = {
+		9044CBF6F6784E749BE89887 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -239,60 +239,60 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A789D1701D204BCD92983328 /* Sources */ = {
+		1291EEC250B740EA85DB3127 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32FD5211CF6F467DAC1D76E2 /* Shared/ProtocolConstants.swift in Sources */,
-				F6C5F690A5F34F87B661773F /* Shared/SteeringPacket.swift in Sources */,
-				3C786232D8AC4C928EC1744E /* Shared/MathUtilities.swift in Sources */,
-				F36CA88DF51C40F09F806024 /* GyroSteer-iOS/UI/GameHUDProfile.swift in Sources */,
-				8225DB3865D74EF9847B092D /* GyroSteer-iOS/UI/SteeringWheelGauge.swift in Sources */,
-				FA9BD024DEAF4A2985F805F7 /* GyroSteer-iOS/UI/CockpitView.swift in Sources */,
-				36AC6EB060054EF0908E7B9B /* GyroSteer-iOS/UI/VerticalSlider.swift in Sources */,
-				0E939252F783403AAD87791B /* GyroSteer-iOS/UI/SettingsSheetView.swift in Sources */,
-				91E7F52A823A45BCB936C3F3 /* GyroSteer-iOS/Core/TransmissionCoordinator.swift in Sources */,
-				2003928999BD4A95B1B11115 /* GyroSteer-iOS/Core/HapticManager.swift in Sources */,
-				496CE95719A347A7B918BAB1 /* GyroSteer-iOS/Core/MotionManager.swift in Sources */,
-				981ED46861874230A308E688 /* GyroSteer-iOS/App/GyroSteerIOSApp.swift in Sources */,
-				F4DB5438581442978C8EFB5B /* GyroSteer-iOS/App/AppDelegate.swift in Sources */,
-				218593F2170D47D18FF74EA0 /* GyroSteer-iOS/Transports/NWTransmitter.swift in Sources */,
-				0997B01985A94B9E9DDC159A /* GyroSteer-iOS/Transports/TransportProtocol.swift in Sources */,
-				DF498536F3354A2E970FC263 /* GyroSteer-iOS/Transports/BLETransmitter.swift in Sources */,
+				F8CD8A3577814D68B8C3C730 /* Shared/ProtocolConstants.swift in Sources */,
+				67F8BB3746DC48A0B1E2AF87 /* Shared/SteeringPacket.swift in Sources */,
+				CF5250B9922F4DC8B92D1E5B /* Shared/MathUtilities.swift in Sources */,
+				5096CE2A049C465AB3B925A6 /* GyroSteer-iOS/UI/GameHUDProfile.swift in Sources */,
+				9F3BC8A1D3CB4724BAB023E1 /* GyroSteer-iOS/UI/SteeringWheelGauge.swift in Sources */,
+				9209F93A7B0A43F7ADF599F3 /* GyroSteer-iOS/UI/CockpitView.swift in Sources */,
+				5734E06C38B344A6983DF978 /* GyroSteer-iOS/UI/VerticalSlider.swift in Sources */,
+				1512715D1DD84C43913FBA13 /* GyroSteer-iOS/UI/SettingsSheetView.swift in Sources */,
+				C69DEA2C5EBE422783D3DF92 /* GyroSteer-iOS/Core/TransmissionCoordinator.swift in Sources */,
+				2DC5AA084DF2417AAB61F992 /* GyroSteer-iOS/Core/HapticManager.swift in Sources */,
+				4882C01F7A5244A085EF9857 /* GyroSteer-iOS/Core/MotionManager.swift in Sources */,
+				F255A39375B94615A21CB2F0 /* GyroSteer-iOS/App/GyroSteerIOSApp.swift in Sources */,
+				A1243ACF8DE541898DEA75C8 /* GyroSteer-iOS/App/AppDelegate.swift in Sources */,
+				4DABC1CB00B247ADBDF10C29 /* GyroSteer-iOS/Transports/NWTransmitter.swift in Sources */,
+				50C8B3B295444F13B72EA573 /* GyroSteer-iOS/Transports/TransportProtocol.swift in Sources */,
+				D2271C7438B04FD0B7841553 /* GyroSteer-iOS/Transports/BLETransmitter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D0C8A8502D824FCC80BB09EB /* Sources */ = {
+		E8ACA368A056428F8D20F8D4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1170EB440EC84C7BAEFCE6BE /* Shared/ProtocolConstants.swift in Sources */,
-				57E89A7B74F04965940DDBDB /* Shared/SteeringPacket.swift in Sources */,
-				0530D431C85445BB95740222 /* Shared/MathUtilities.swift in Sources */,
-				FF402B5B0F9344918513885F /* GyroSteer-Mac/UI/DashboardView.swift in Sources */,
-				173765D0D9994B0492A132A3 /* GyroSteer-Mac/UI/OscilloscopeView.swift in Sources */,
-				B5CBA91A19324EA8A1DFCF50 /* GyroSteer-Mac/UI/MenuBarView.swift in Sources */,
-				578E5F2BD0EE4FDB83E76BBE /* GyroSteer-Mac/UI/SteeringArcGauge.swift in Sources */,
-				F760456DB14F409FBD23797C /* GyroSteer-Mac/Core/EventLogger.swift in Sources */,
-				DCAF604C3ABC4880B86A3A24 /* GyroSteer-Mac/Core/TransportArbiter.swift in Sources */,
-				7F9B1116386E41008C1617F1 /* GyroSteer-Mac/Core/TelemetryHistory.swift in Sources */,
-				AEBDFAE6F8744AF69061670E /* GyroSteer-Mac/App/AppDelegate.swift in Sources */,
-				7A2CC8CF19CC45F4AC47B37E /* GyroSteer-Mac/App/GyroSteerMacApp.swift in Sources */,
-				1D65E04FDC05496B8117F5BE /* GyroSteer-Mac/Transports/NWReceiver.swift in Sources */,
-				3A71452928114740997653B9 /* GyroSteer-Mac/Transports/BLEReceiver.swift in Sources */,
-				333D8508B67B49E5AE1993F6 /* GyroSteer-Mac/Transports/ReceiverTransport.swift in Sources */,
-				11AAC1FED4354ED0B11BB27F /* GyroSteer-Mac/Output/OutputCoordinator.swift in Sources */,
-				07FF49DA000847F382981DD7 /* GyroSteer-Mac/Output/AccessibilityPermissionHelper.swift in Sources */,
-				ECFBE0D864A74B0DB5C5D6DC /* GyroSteer-Mac/Output/InputInjectorProtocol.swift in Sources */,
-				1FF3D0A2922745E988F20A92 /* GyroSteer-Mac/Output/KeyboardMouseEmulator.swift in Sources */,
-				D5A6AA623DBC4B33A58A6D4C /* GyroSteer-Mac/Output/VirtualGamepadDriver.swift in Sources */,
+				D522152DB63545F085EEA5E7 /* Shared/ProtocolConstants.swift in Sources */,
+				90777FE6380C41B483448D67 /* Shared/SteeringPacket.swift in Sources */,
+				4A2F8FFFCB804933B4DDA3FD /* Shared/MathUtilities.swift in Sources */,
+				CF9BED25FC16405D8C72AE01 /* GyroSteer-Mac/UI/DashboardView.swift in Sources */,
+				BC2BF10288E641CEB0E070FD /* GyroSteer-Mac/UI/OscilloscopeView.swift in Sources */,
+				8E4F647E78CF43B29390A894 /* GyroSteer-Mac/UI/MenuBarView.swift in Sources */,
+				7AFD488A134444AFB7726460 /* GyroSteer-Mac/UI/SteeringArcGauge.swift in Sources */,
+				0126295090A844308F619D36 /* GyroSteer-Mac/Core/EventLogger.swift in Sources */,
+				E9C05D9B3A744571BEB78BF5 /* GyroSteer-Mac/Core/TransportArbiter.swift in Sources */,
+				45F86FF51D5F474580008E8D /* GyroSteer-Mac/Core/TelemetryHistory.swift in Sources */,
+				D254AF8392C94BB2B128717A /* GyroSteer-Mac/App/AppDelegate.swift in Sources */,
+				41B0FFC0F79143238FB85025 /* GyroSteer-Mac/App/GyroSteerMacApp.swift in Sources */,
+				53C89535A8514AA9A68F163B /* GyroSteer-Mac/Transports/NWReceiver.swift in Sources */,
+				F7645B8700BC452AB565519A /* GyroSteer-Mac/Transports/BLEReceiver.swift in Sources */,
+				307BA6B6E45C42A199978433 /* GyroSteer-Mac/Transports/ReceiverTransport.swift in Sources */,
+				847AC53B37A147C2B520EDF2 /* GyroSteer-Mac/Output/OutputCoordinator.swift in Sources */,
+				6C47C77E8CD448849E31C7D1 /* GyroSteer-Mac/Output/AccessibilityPermissionHelper.swift in Sources */,
+				3949052CFC1342C2AB382E69 /* GyroSteer-Mac/Output/InputInjectorProtocol.swift in Sources */,
+				667641A4B9C14DC885C32A07 /* GyroSteer-Mac/Output/KeyboardMouseEmulator.swift in Sources */,
+				57D6E8A151474E17BF97E5F7 /* GyroSteer-Mac/Output/VirtualGamepadDriver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		2AFECC13A9B644C18CE7CC5E /* Debug */ = {
+		3B207388F0D143E6A5FA13F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -300,64 +300,7 @@
 			};
 			name = Debug;
 		};
-		43470F4A7004449781286DF1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEVELOPMENT_TEAM = 29735TU6Q8;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
-				INFOPLIST_FILE = "GyroSteer-iOS/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.gyrosteer.transmitter;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.9;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		70FD7FAAAD02468BAAC5FBE3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				SWIFT_VERSION = 5.9;
-			};
-			name = Release;
-		};
-		C598341B0B5E4348BB5AAF2A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "GyroSteer-Mac/Resources/GyroSteer-Mac.entitlements";
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_HARDENED_RUNTIME = YES;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
-				INFOPLIST_FILE = "GyroSteer-Mac/Resources/Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.gyrosteer.receiver;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.9;
-			};
-			name = Release;
-		};
-		D01573DA6BE541078503C276 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEVELOPMENT_TEAM = 29735TU6Q8;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
-				INFOPLIST_FILE = "GyroSteer-iOS/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.gyrosteer.transmitter;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.9;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		E7350DB2E9B64CDC950E7A87 /* Debug */ = {
+		6B89ED725CC148C1AB6EB305 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "GyroSteer-Mac/Resources/GyroSteer-Mac.entitlements";
@@ -373,38 +316,95 @@
 				SWIFT_VERSION = 5.9;
 			};
 			name = Debug;
+		};
+		6F7FE3BA74BA4135A24251D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		B564ACF26A6D49039782547C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 29735TU6Q8;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
+				INFOPLIST_FILE = "GyroSteer-iOS/Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gyrosteer.transmitter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D653203FCAAF46F9A6914494 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 29735TU6Q8;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
+				INFOPLIST_FILE = "GyroSteer-iOS/Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gyrosteer.transmitter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F0901F8F16614DE387EA1996 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "GyroSteer-Mac/Resources/GyroSteer-Mac.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
+				INFOPLIST_FILE = "GyroSteer-Mac/Resources/Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gyrosteer.receiver;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B8C1CEF823F44DDBAD2FF1D2 /* Build configuration list for PBXNativeTarget "GyroSteer-iOS" */ = {
+		6FD4B3473DF243CA84945EFF /* Build configuration list for PBXNativeTarget "GyroSteer-Mac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				43470F4A7004449781286DF1 /* Debug */,
-				D01573DA6BE541078503C276 /* Release */,
+				6B89ED725CC148C1AB6EB305 /* Debug */,
+				F0901F8F16614DE387EA1996 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D43D26BAF3D641C1A1AA9C2A /* Build configuration list for PBXProject "GyroSteer" */ = {
+		7F005A7E79E24C17838DE750 /* Build configuration list for PBXProject "GyroSteer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2AFECC13A9B644C18CE7CC5E /* Debug */,
-				70FD7FAAAD02468BAAC5FBE3 /* Release */,
+				3B207388F0D143E6A5FA13F5 /* Debug */,
+				6F7FE3BA74BA4135A24251D8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E5217816C39E41128084B9D3 /* Build configuration list for PBXNativeTarget "GyroSteer-Mac" */ = {
+		B2B93D8FA8314C4BB86A80CF /* Build configuration list for PBXNativeTarget "GyroSteer-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E7350DB2E9B64CDC950E7A87 /* Debug */,
-				C598341B0B5E4348BB5AAF2A /* Release */,
+				D653203FCAAF46F9A6914494 /* Debug */,
+				B564ACF26A6D49039782547C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 68961CCE198F4F97B1A75799 /* Project object */;
+	rootObject = 2B75F1C8888143B79898710E /* Project object */;
 }

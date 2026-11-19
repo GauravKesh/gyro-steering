@@ -155,14 +155,48 @@ public struct SettingsSheetView: View {
                 }
 
                 // MARK: - 5. Tactile Haptic Engine Section
-                Section(header: Text("Tactile Haptic Engine")) {
+                Section(header: Text("Dynamic Driving Haptic Engine")) {
                     Toggle("Enable Haptic Feedback", isOn: $haptics.isEnabled)
                         .tint(coordinator.activeHUDProfile.accentColor)
 
                     if haptics.isEnabled {
-                        Toggle("Steering Center Detent", isOn: $haptics.enableCenterDetent)
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text("Master Haptic Intensity")
+                                Spacer()
+                                Text("\(Int(haptics.masterIntensity * 100))%")
+                                    .foregroundColor(.cyan)
+                            }
+                            Slider(value: $haptics.masterIntensity, in: 0.2...1.0, step: 0.05)
+                        }
+
+                        Toggle("Engine RPM Rumble", isOn: $haptics.enableEngineRumble)
+                            .tint(coordinator.activeHUDProfile.accentColor)
+                        Text("Continuous diesel engine vibration that ramps up in frequency and intensity with throttle input.")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+
+                        Toggle("ABS Brake Chatter (>75%)", isOn: $haptics.enableABSPulse)
+                            .tint(coordinator.activeHUDProfile.accentColor)
+                        Text("Simulates rapid anti-lock brake pump pulsations during heavy emergency braking.")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+
+                        Toggle("Steering Lock Bump-Stop", isOn: $haptics.enableSteeringLockBumper)
+                            .tint(coordinator.activeHUDProfile.accentColor)
+                        Text("Solid physical impact sensation when reaching maximum steering wheel lock angle.")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+
+                        Toggle("Steering Center Detent (0°)", isOn: $haptics.enableCenterDetent)
                             .tint(coordinator.activeHUDProfile.accentColor)
                         Text("Generates a physical tactile notch in your hands whenever the steering passes through 0° center.")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+
+                        Toggle("Turn Signal Tick-Tock", isOn: $haptics.enableBlinkerTicks)
+                            .tint(coordinator.activeHUDProfile.accentColor)
+                        Text("Alternating mechanical clicks in sync with left and right blinkers.")
                             .font(.caption)
                             .foregroundColor(.secondary)
 

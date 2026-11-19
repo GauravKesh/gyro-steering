@@ -199,6 +199,19 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
         let packet = currentPacket
         lock.unlock()
 
+        // Automatically switch between ETS2 Mouse Steering and Arcade Keyboard Steering
+        if packet.buttons.contains(.arcadeProfile) {
+            if useMouseSteering {
+                useMouseSteering = false
+                EventLogger.shared.log("PROFILE: AUTO-SWITCHED TO ARCADE KEYBOARD (Asphalt)")
+            }
+        } else {
+            if !useMouseSteering {
+                useMouseSteering = true
+                EventLogger.shared.log("PROFILE: AUTO-SWITCHED TO MOUSE STEERING (ETS2)")
+            }
+        }
+
         let rawSteer = packet.steeringAngle
         let steer = useMouseSteering ? rawSteer : max(-1.0, min(1.0, rawSteer * keyboardSteeringGain))
         let throttleNorm = packet.normalizedThrottle
@@ -437,12 +450,24 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
         // Parking Brake / Handbrake (ETS2 Spacebar):
         // In ETS2, Spacebar is an on/off toggle. Whenever the button state transitions (ON->OFF or OFF->ON),
         // we pulse Spacebar so ETS2 engages or releases the air brake in exact sync with the cockpit!
-        if oldButtons.contains(.parkingBrake) != newButtons.contains(.parkingBrake) {
-            tapKey(keyParkingBrake)
-            if !useMouseSteering && newButtons.contains(.parkingBrake) {
-                tapKey(keyNitroN)
+        // Parking Brake (ETS2) / Nitro Boost (Asphalt):
+        if !useMouseSteering {
+            // In Asphalt mode, holding Nitro holds Spacebar & 'N'
+            if !oldButtons.contains(.parkingBrake) && newButtons.contains(.parkingBrake) {
+                postKey(keySpace, down: true)
+                postKey(keyNitroN, down: true)
+                EventLogger.shared.log("BUTTON: NITRO (Space + N) DOWN")
+            } else if oldButtons.contains(.parkingBrake) && !newButtons.contains(.parkingBrake) {
+                postKey(keySpace, down: false)
+                postKey(keyNitroN, down: false)
+                EventLogger.shared.log("BUTTON: NITRO (Space + N) UP")
             }
-            EventLogger.shared.log("BUTTON: PARKING BRAKE (Space) -> \(newButtons.contains(.parkingBrake) ? "ENGAGED" : "RELEASED")")
+        } else {
+            // In ETS2 mode, Spacebar is toggled
+            if oldButtons.contains(.parkingBrake) != newButtons.contains(.parkingBrake) {
+                tapKey(keyParkingBrake)
+                EventLogger.shared.log("BUTTON: PARKING BRAKE (Space) -> \(newButtons.contains(.parkingBrake) ? "ENGAGED" : "RELEASED")")
+            }
         }
 
         // Enter / Confirm Action (Return key - Toll booths, jobs, gas stations, ferry, rest in ETS2)
@@ -468,10 +493,22 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
             EventLogger.shared.log("BUTTON: GEAR UP (Left Shift)")
         }
 
-        // Gear Down (Control modifier)
-        if !oldButtons.contains(.gearDown) && newButtons.contains(.gearDown) {
-            tapKey(keyGearDown)
-            EventLogger.shared.log("BUTTON: GEAR DOWN (Left Ctrl)")
+        // Gear Down (ETS2 Control modifier) / Drift (Asphalt Shift + Down Arrow)
+        if !useMouseSteering {
+            if !oldButtons.contains(.gearDown) && newButtons.contains(.gearDown) {
+                postKey(keyShift, down: true)
+                postKey(keyDownArrow, down: true)
+                EventLogger.shared.log("BUTTON: DRIFT (Shift + Down) DOWN")
+            } else if oldButtons.contains(.gearDown) && !newButtons.contains(.gearDown) {
+                postKey(keyShift, down: false)
+                postKey(keyDownArrow, down: false)
+                EventLogger.shared.log("BUTTON: DRIFT (Shift + Down) UP")
+            }
+        } else {
+            if !oldButtons.contains(.gearDown) && newButtons.contains(.gearDown) {
+                tapKey(keyGearDown)
+                EventLogger.shared.log("BUTTON: GEAR DOWN (Left Ctrl)")
+            }
         }
 
         // Cruise Control (tap on press)

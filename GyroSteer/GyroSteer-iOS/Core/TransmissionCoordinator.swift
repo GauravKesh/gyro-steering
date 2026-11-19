@@ -82,6 +82,9 @@ public final class TransmissionCoordinator: ObservableObject {
            let profile = GameHUDProfile(rawValue: savedProfile) {
             self.activeHUDProfile = profile
             self.motionManager.maxLockAngleDegrees = profile.defaultLockAngle
+            if profile == .asphalt {
+                self.activeButtons.insert(.arcadeProfile)
+            }
         }
 
         if let savedDisplay = UserDefaults.standard.string(forKey: "gyrosteer.buttonDisplayMode"),
@@ -118,6 +121,9 @@ public final class TransmissionCoordinator: ObservableObject {
            let profile = GameHUDProfile(rawValue: savedProfile) {
             self.activeHUDProfile = profile
             self.motionManager.maxLockAngleDegrees = profile.defaultLockAngle
+            if profile == .asphalt {
+                self.activeButtons.insert(.arcadeProfile)
+            }
         }
 
         if let savedDisplay = UserDefaults.standard.string(forKey: "gyrosteer.buttonDisplayMode"),
@@ -248,6 +254,9 @@ public final class TransmissionCoordinator: ObservableObject {
         motionManager.stop()
         nwTransmitter.stop()
         bleTransmitter.stop()
+        #if os(iOS)
+        HapticManager.shared.stopEngineRumble()
+        #endif
     }
 
     // MARK: - Packet Dispatch (100Hz)
@@ -262,6 +271,18 @@ public final class TransmissionCoordinator: ObservableObject {
             normalizedBrake: brake,
             buttons: activeButtons
         )
+
+        #if os(iOS)
+        let isEngineRunning = activeButtons.contains(.engineStart)
+        let isBlinkerActive = activeButtons.contains(.leftBlinker) || activeButtons.contains(.rightBlinker) || activeButtons.contains(.hazardLights)
+        HapticManager.shared.updateDrivingDynamics(
+            throttle: throttle,
+            brake: brake,
+            normalizedSteering: motionManager.normalizedSteering,
+            isEngineRunning: isEngineRunning,
+            isBlinkerActive: isBlinkerActive
+        )
+        #endif
 
         // Route packets according to user's explicit connection preference
         switch preferredConnection {
@@ -311,6 +332,11 @@ public final class TransmissionCoordinator: ObservableObject {
     public func setProfile(_ profile: GameHUDProfile) {
         activeHUDProfile = profile
         motionManager.maxLockAngleDegrees = profile.defaultLockAngle
+        if profile == .asphalt {
+            activeButtons.insert(.arcadeProfile)
+        } else {
+            activeButtons.remove(.arcadeProfile)
+        }
         #if os(iOS)
         HapticManager.shared.calibrationSuccess()
         #endif

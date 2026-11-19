@@ -777,64 +777,136 @@ public struct CockpitView: View {
 
     // MARK: - Asphalt Arcade Layout
     private var asphaltArcadeCockpitLayout: some View {
-        VStack(spacing: 8) {
-            SteeringWheelGauge(
-                degrees: coordinator.motionManager.currentDegrees,
-                normalizedSteering: coordinator.motionManager.normalizedSteering,
-                maxLockAngle: coordinator.motionManager.maxLockAngleDegrees,
-                isCentered: abs(coordinator.motionManager.normalizedSteering) < 0.01,
-                profile: .asphalt,
-                onCalibrate: {
-                    coordinator.recenter()
-                }
-            )
+        HStack(alignment: .center, spacing: 10) {
+            // --- LEFT ZONE: Brake Pedal & Drift Control ---
+            HStack(spacing: 8) {
+                // Large Vertical Brake / Reverse Pedal (Down Arrow + S)
+                VerticalSlider(
+                    title: "BRAKE",
+                    subtitle: "REVERSE",
+                    accentColor: Color(red: 1.0, green: 0.16, blue: 0.28),
+                    iconName: "arrow.down.circle.fill",
+                    displayMode: coordinator.buttonDisplayMode,
+                    value: $coordinator.brake
+                )
 
-            HStack(spacing: 14) {
+                // Dedicated Quick Drift Button (Shift + Down Arrow)
+                VStack(spacing: 8) {
+                    InstantHoldButton(button: .gearDown, coordinator: coordinator) {
+                        VStack(spacing: 4) {
+                            Image(systemName: "skew")
+                                .font(.system(size: 20, weight: .black))
+                            Text("DRIFT")
+                                .font(.system(size: 10, weight: .black, design: .monospaced))
+                        }
+                        .foregroundColor(.white)
+                        .frame(width: 68, height: 68)
+                        .background(
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(coordinator.activeButtons.contains(.gearDown) ? Color.cyan : Color.blue.opacity(0.4))
+                                .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.cyan, lineWidth: 1.5))
+                                .shadow(color: Color.cyan.opacity(0.6), radius: 6)
+                        )
+                    }
+
+                    recenterButton
+                }
+            }
+
+            Spacer(minLength: 4)
+
+            // --- CENTRAL ZONE: Steering Wheel & Respawn ---
+            VStack(spacing: 6) {
+                SteeringWheelGauge(
+                    degrees: coordinator.motionManager.currentDegrees,
+                    normalizedSteering: coordinator.motionManager.normalizedSteering,
+                    maxLockAngle: coordinator.motionManager.maxLockAngleDegrees,
+                    isCentered: abs(coordinator.motionManager.normalizedSteering) < 0.01,
+                    profile: .asphalt,
+                    onCalibrate: {
+                        coordinator.recenter()
+                    }
+                )
+
+                // Bottom Arcade Action: Respawn (R)
                 Button {
-                    coordinator.pressButton(.gearDown)
+                    coordinator.pressButton(.trailerAttach) // R key in Asphalt
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                        coordinator.releaseButton(.gearDown)
+                        coordinator.releaseButton(.trailerAttach)
                     }
                 } label: {
-                    HStack(spacing: 8) {
-                        Image(systemName: "skew")
-                            .font(.system(size: 20, weight: .black))
-                        Text("DRIFT")
-                            .font(.system(size: 12, weight: .black, design: .monospaced))
+                    HStack(spacing: 6) {
+                        Image(systemName: "arrow.counterclockwise.circle.fill")
+                            .font(.system(size: 13, weight: .bold))
+                        Text("RESPAWN (R)")
+                            .font(.system(size: 9, weight: .black, design: .monospaced))
                     }
                     .foregroundColor(.white)
-                    .frame(height: 44)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 14)
+                    .frame(height: 30)
                     .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.blue.opacity(0.35))
-                            .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.cyan, lineWidth: 1.5))
+                        Capsule()
+                            .fill(Color(white: 0.16))
+                            .overlay(Capsule().stroke(Color.orange.opacity(0.6), lineWidth: 1.2))
                     )
                 }
+            }
 
-                Button {
-                    coordinator.pressButton(.parkingBrake)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.18) {
-                        coordinator.releaseButton(.parkingBrake)
+            Spacer(minLength: 4)
+
+            // --- RIGHT ZONE: Nitro & Throttle Pedal ---
+            HStack(spacing: 8) {
+                // Dedicated Quick Nitro Button (Spacebar + N)
+                VStack(spacing: 8) {
+                    InstantHoldButton(button: .parkingBrake, coordinator: coordinator) {
+                        VStack(spacing: 4) {
+                            Image(systemName: "flame.fill")
+                                .font(.system(size: 24, weight: .black))
+                            Text("NITRO")
+                                .font(.system(size: 10, weight: .black, design: .monospaced))
+                        }
+                        .foregroundColor(.white)
+                        .frame(width: 68, height: 68)
+                        .background(
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(LinearGradient(colors: [Color.purple, Color.red], startPoint: .topLeading, endPoint: .bottomTrailing))
+                                .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.pink, lineWidth: 1.5))
+                                .shadow(color: Color.purple.opacity(0.8), radius: coordinator.activeButtons.contains(.parkingBrake) ? 12 : 5)
+                        )
                     }
-                } label: {
-                    HStack(spacing: 10) {
-                        Image(systemName: "flame.fill")
-                            .font(.system(size: 24, weight: .black))
-                        Text("NITRO")
-                            .font(.system(size: 14, weight: .black, design: .monospaced))
+
+                    // Camera View Cycle Button
+                    Button {
+                        coordinator.pressButton(.cameraView)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                            coordinator.releaseButton(.cameraView)
+                        }
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "camera.fill")
+                                .font(.system(size: 12, weight: .bold))
+                            Text("CAM")
+                                .font(.system(size: 9, weight: .black, design: .monospaced))
+                        }
+                        .foregroundColor(.white)
+                        .frame(width: 68, height: 38)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color(white: 0.16))
+                                .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.white.opacity(0.2), lineWidth: 1.2))
+                        )
                     }
-                    .foregroundColor(.white)
-                    .frame(height: 48)
-                    .padding(.horizontal, 24)
-                    .background(
-                        RoundedRectangle(cornerRadius: 14)
-                            .fill(LinearGradient(colors: [Color.purple, Color.red], startPoint: .topLeading, endPoint: .bottomTrailing))
-                            .shadow(color: Color.purple.opacity(0.7), radius: 10)
-                    )
                 }
 
-                recenterButton
+                // Large Vertical Throttle Pedal (Up Arrow + W)
+                VerticalSlider(
+                    title: "THROTTLE",
+                    subtitle: "BOOST",
+                    accentColor: Color(red: 0.0, green: 1.0, blue: 0.53),
+                    iconName: "bolt.fill",
+                    displayMode: coordinator.buttonDisplayMode,
+                    value: $coordinator.throttle
+                )
             }
         }
     }
