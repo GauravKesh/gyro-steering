@@ -96,6 +96,8 @@ def main():
     mac_icns_ref = add_file("GyroSteer-Mac/Resources/AppIcon.icns", "AppIcon.icns")
     mac_icns_bf_id = add_build_file(mac_icns_ref)
     ios_info_ref = add_file("GyroSteer-iOS/Resources/Info.plist", "Info.plist")
+    ios_xcassets_ref = add_file("GyroSteer-iOS/Resources/Assets.xcassets", "Assets.xcassets")
+    ios_xcassets_bf_id = add_build_file(ios_xcassets_ref)
 
     lines = []
     lines.append("// !$*UTF8*$!")
@@ -118,7 +120,17 @@ def main():
     lines.append(f"\t\t{mac_product_id} /* GyroSteer-Mac.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = \"GyroSteer-Mac.app\"; sourceTree = BUILT_PRODUCTS_DIR; }};")
     lines.append(f"\t\t{ios_product_id} /* GyroSteer-iOS.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = \"GyroSteer-iOS.app\"; sourceTree = BUILT_PRODUCTS_DIR; }};")
     for ref_id, (rpath, fname) in file_refs.items():
-        lines.append(f"\t\t{ref_id} /* {fname} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = \"{rpath}\"; sourceTree = SOURCE_ROOT; }};")
+        if fname.endswith(".xcassets"):
+            ftype = "folder.assetcatalog"
+        elif fname.endswith(".icns"):
+            ftype = "image.icns"
+        elif fname.endswith(".plist"):
+            ftype = "text.plist.xml"
+        elif fname.endswith(".entitlements"):
+            ftype = "text.plist.entitlements"
+        else:
+            ftype = "sourcecode.swift"
+        lines.append(f"\t\t{ref_id} /* {fname} */ = {{isa = PBXFileReference; lastKnownFileType = {ftype}; path = \"{rpath}\"; sourceTree = SOURCE_ROOT; }};")
     lines.append("/* End PBXFileReference section */")
 
     # PBXFrameworksBuildPhase
@@ -195,7 +207,7 @@ def main():
     # PBXResourcesBuildPhase
     lines.append("/* Begin PBXResourcesBuildPhase section */")
     lines.append(f"\t\t{mac_resources_build_phase_id} /* Resources */ = {{isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ({mac_icns_bf_id} /* AppIcon.icns in Resources */,); runOnlyForDeploymentPostprocessing = 0; }};")
-    lines.append(f"\t\t{ios_resources_build_phase_id} /* Resources */ = {{isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; }};")
+    lines.append(f"\t\t{ios_resources_build_phase_id} /* Resources */ = {{isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ({ios_xcassets_bf_id} /* Assets.xcassets in Resources */,); runOnlyForDeploymentPostprocessing = 0; }};")
     lines.append("/* End PBXResourcesBuildPhase section */")
 
     # PBXSourcesBuildPhase
@@ -238,6 +250,7 @@ def main():
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				INFOPLIST_FILE = "GyroSteer-iOS/Resources/Info.plist";
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				SWIFT_VERSION = 5.9;
 				GENERATE_INFOPLIST_FILE = NO;"""
