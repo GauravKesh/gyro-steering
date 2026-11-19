@@ -61,6 +61,9 @@ mkdir -p "$APP_DIR/Contents/MacOS"
 mkdir -p "$APP_DIR/Contents/Resources"
 
 cp "$WORKSPACE_ROOT/GyroSteer-Mac/Resources/Info.plist" "$APP_DIR/Contents/Info.plist"
+if [ -f "$WORKSPACE_ROOT/GyroSteer-Mac/Resources/AppIcon.icns" ]; then
+    cp "$WORKSPACE_ROOT/GyroSteer-Mac/Resources/AppIcon.icns" "$APP_DIR/Contents/Resources/AppIcon.icns"
+fi
 echo -n "APPL????" > "$APP_DIR/Contents/PkgInfo"
 
 # Step 3: Compile macOS App Binary
@@ -99,6 +102,14 @@ fi
 echo ""
 echo "========================================================"
 echo "✔ BUILD SUCCESSFUL: $APP_DIR"
+
+if [ "$1" == "--install" ] || [ "$1" == "-i" ]; then
+    echo "• Installing to /Applications/GyroSteer.app..."
+    rm -rf /Applications/GyroSteer.app
+    cp -R "$APP_DIR" /Applications/
+    echo "✔ Successfully installed to /Applications/GyroSteer.app"
+fi
+
 echo "To run immediately, execute:"
 echo "    open \"$APP_DIR\""
 echo "========================================================"

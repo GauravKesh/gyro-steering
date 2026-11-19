@@ -93,6 +93,8 @@ def main():
     # Info.plist and Entitlements refs
     mac_info_ref = add_file("GyroSteer-Mac/Resources/Info.plist", "Info.plist")
     mac_ent_ref = add_file("GyroSteer-Mac/Resources/GyroSteer-Mac.entitlements", "GyroSteer-Mac.entitlements")
+    mac_icns_ref = add_file("GyroSteer-Mac/Resources/AppIcon.icns", "AppIcon.icns")
+    mac_icns_bf_id = add_build_file(mac_icns_ref)
     ios_info_ref = add_file("GyroSteer-iOS/Resources/Info.plist", "Info.plist")
 
     lines = []
@@ -192,7 +194,7 @@ def main():
 
     # PBXResourcesBuildPhase
     lines.append("/* Begin PBXResourcesBuildPhase section */")
-    lines.append(f"\t\t{mac_resources_build_phase_id} /* Resources */ = {{isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; }};")
+    lines.append(f"\t\t{mac_resources_build_phase_id} /* Resources */ = {{isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ({mac_icns_bf_id} /* AppIcon.icns in Resources */,); runOnlyForDeploymentPostprocessing = 0; }};")
     lines.append(f"\t\t{ios_resources_build_phase_id} /* Resources */ = {{isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; }};")
     lines.append("/* End PBXResourcesBuildPhase section */")
 
