@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleExecutable</key>
+    <string>GyroSteer</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.gyrosteer.receiver</string>
+    <key>CFBundleName</key>
+    <string>GyroSteer</string>
+    <key>CFBundleDisplayName</key>
+    <string>GyroSteer</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>13.0</string>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>GyroSteer listens for low-latency virtual steering wheel telemetry over wired USB and local Wi-Fi.</string>
+    <key>NSBonjourServices</key>
+    <array>
+        <string>_gyrosteer._udp</string>
+    </array>
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>GyroSteer receives Bluetooth Low Energy steering packets when no cable or Wi-Fi is available.</string>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>GyroSteer uses Accessibility and Event Taps to emulate keyboard driving keys for simulators.</string>
+    <key>NSSupportsAutomaticGraphicsSwitching</key>
+    <true/>
+</dict>
+</plist>
