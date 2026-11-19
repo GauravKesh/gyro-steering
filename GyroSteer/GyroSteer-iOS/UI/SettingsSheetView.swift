@@ -188,9 +188,9 @@ public struct SettingsSheetView: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
 
-                        Toggle("Steering Center Detent (0°)", isOn: $haptics.enableCenterDetent)
+                        Toggle("Spatial Magnetic Center Notch (0°)", isOn: $haptics.enableCenterDetent)
                             .tint(coordinator.activeHUDProfile.accentColor)
-                        Text("Generates a physical tactile notch in your hands whenever the steering passes through 0° center.")
+                        Text("Apple F1 Movie style spatial haptic latch: High-attack mechanical strike + low-frequency chassis resonance settling thud when locking into 0° center, with subtle breakaway spring resistance when turning away.")
                             .font(.caption)
                             .foregroundColor(.secondary)
 

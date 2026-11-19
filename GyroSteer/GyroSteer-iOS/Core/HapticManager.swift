@@ -58,6 +58,7 @@ public final class HapticManager: ObservableObject {
 
     private var hapticEngine: CHHapticEngine?
     private var engineRumblePlayer: CHHapticAdvancedPatternPlayer?
+    private var centerDetentPattern: CHHapticPattern?
     private var isEngineRumblePlaying: Bool = false
 
     // Dynamic State Tracking
@@ -134,8 +135,48 @@ public final class HapticManager: ObservableObject {
             try engine.start()
             self.hapticEngine = engine
             prepareEngineRumblePlayer()
+            prepareCenterDetentPattern()
         } catch {
             self.hapticEngine = nil
+        }
+    }
+
+    private func prepareCenterDetentPattern() {
+        guard hapticEngine != nil else { return }
+
+        // Apple F1 Movie / Cinematic Spatial Steering Center Detent Pattern:
+        // Event 1: High-attack mechanical latch transient (0ms, 100% intensity, 95% sharpness)
+        let strikeIntensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1.0)
+        let strikeSharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.95)
+        let strikeEvent = CHHapticEvent(
+            eventType: .hapticTransient,
+            parameters: [strikeIntensity, strikeSharpness],
+            relativeTime: 0
+        )
+
+        // Event 2: Low-frequency chassis resonance decay (12ms -> 45ms, 45% intensity, 15% sharpness)
+        let rumbleIntensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.45)
+        let rumbleSharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.15)
+        let rumbleEvent = CHHapticEvent(
+            eventType: .hapticContinuous,
+            parameters: [rumbleIntensity, rumbleSharpness],
+            relativeTime: 0.012,
+            duration: 0.035
+        )
+
+        // Event 3: Secondary settling lock-in notch (22ms, 70% intensity, 35% sharpness)
+        let settleIntensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.70)
+        let settleSharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.35)
+        let settleEvent = CHHapticEvent(
+            eventType: .hapticTransient,
+            parameters: [settleIntensity, settleSharpness],
+            relativeTime: 0.022
+        )
+
+        do {
+            self.centerDetentPattern = try CHHapticPattern(events: [strikeEvent, rumbleEvent, settleEvent], parameters: [])
+        } catch {
+            self.centerDetentPattern = nil
         }
     }
 
@@ -265,30 +306,52 @@ public final class HapticManager: ObservableObject {
         }
     }
 
-    // MARK: - 4. Steering Center Detent (0° Zero Passing)
+    // MARK: - 4. Steering Center Detent (Apple F1 Movie Spatial Magnetic Notch)
 
     public func checkCenterDetent(normalizedSteering: Float) {
         guard isEnabled && enableCenterDetent else { return }
-        let isNowCentered = abs(normalizedSteering) < 0.02
+        let isNowCentered = abs(normalizedSteering) < 0.022
         if isNowCentered && !wasCentered {
             wasCentered = true
             let now = ProcessInfo.processInfo.systemUptime
-            if now - lastCenterDetentTime > 0.10 {
+            if now - lastCenterDetentTime > 0.08 {
                 lastCenterDetentTime = now
-                selection.selectionChanged()
+                playAppleF1CenterDetent()
             }
-        } else if !isNowCentered && abs(normalizedSteering) > 0.04 {
+        } else if !isNowCentered && abs(normalizedSteering) > 0.038 {
+            if wasCentered {
+                // Subtle mechanical breakaway sensation when overcoming the centering spring
+                softImpact.impactOccurred(intensity: CGFloat(masterIntensity * 0.40))
+            }
             wasCentered = false
         }
     }
 
-    public func centerDetent() {
+    /// Plays Apple F1 Movie / Cinematic Spatial Magnetic Centering Detent
+    public func playAppleF1CenterDetent() {
         guard isEnabled && enableCenterDetent else { return }
-        let now = ProcessInfo.processInfo.systemUptime
-        if now - lastCenterDetentTime > 0.10 {
-            lastCenterDetentTime = now
-            selection.selectionChanged()
+
+        if let engine = hapticEngine, let pattern = centerDetentPattern {
+            do {
+                try engine.start()
+                let player = try engine.makePlayer(with: pattern)
+                try player.start(atTime: CHHapticTimeImmediate)
+                return
+            } catch {
+                // Fall through to dual-stage mechanical impact
+            }
         }
+
+        // Dual-Stage Mechanical Impact Fallback (Solid strike + resonance settle)
+        rigidImpact.impactOccurred(intensity: CGFloat(masterIntensity * 1.0))
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.022) { [weak self] in
+            guard let self = self else { return }
+            self.mediumImpact.impactOccurred(intensity: CGFloat(self.masterIntensity * 0.6))
+        }
+    }
+
+    public func centerDetent() {
+        playAppleF1CenterDetent()
     }
 
     // MARK: - 5. Turn Signal "Tick-Tock" (Alternating Blinker Audio-Haptic)
@@ -416,6 +479,7 @@ public final class HapticManager: ObservableObject {
     public func parkingBrake() {}
     public func nitroBoost() {}
     public func centerDetent() {}
+    public func playAppleF1CenterDetent() {}
     public func calibrationSuccess() {}
     public func updateDrivingDynamics(throttle: Float, brake: Float, normalizedSteering: Float, isEngineRunning: Bool, isBlinkerActive: Bool) {}
     public func stopEngineRumble() {}
