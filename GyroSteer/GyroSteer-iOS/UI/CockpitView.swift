@@ -974,51 +974,35 @@ public struct CockpitView: View {
     }
 }
 
-// MARK: - Instant Hold Button Helper for Horn
+// MARK: - Instant Hold Button Helper for Horn, Drift, Nitro, and Actions
 private struct InstantHoldButton<Label: View>: View {
     let button: SteeringButtons
     @ObservedObject var coordinator: TransmissionCoordinator
     let label: () -> Label
 
+    @State private var isPressed: Bool = false
+
     var body: some View {
-        Button {
-            coordinator.pressButton(button)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                coordinator.releaseButton(button)
-            }
-        } label: {
-            label()
-        }
-        .buttonStyle(InstantHoldStyle(button: button, coordinator: coordinator))
-    }
-}
-
-private struct InstantHoldStyle: ButtonStyle {
-    let button: SteeringButtons
-    @ObservedObject var coordinator: TransmissionCoordinator
-
-    @ViewBuilder
-    func makeBody(configuration: Configuration) -> some View {
-        if #available(iOS 17.0, *) {
-            configuration.label
-                .opacity(configuration.isPressed ? 0.8 : 1.0)
-                .onChange(of: configuration.isPressed) { _, isPressed in
-                    if isPressed {
-                        coordinator.pressButton(button)
-                    } else {
-                        coordinator.releaseButton(button)
+        label()
+            .opacity(isPressed ? 0.75 : 1.0)
+            .scaleEffect(isPressed ? 0.95 : 1.0)
+            .animation(.easeInOut(duration: 0.08), value: isPressed)
+            .contentShape(Rectangle())
+            .gesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { _ in
+                        if !isPressed {
+                            isPressed = true
+                            HapticManager.shared.buttonTap()
+                            coordinator.pressButton(button)
+                        }
                     }
-                }
-        } else {
-            configuration.label
-                .opacity(configuration.isPressed ? 0.8 : 1.0)
-                .onChange(of: configuration.isPressed) { isPressed in
-                    if isPressed {
-                        coordinator.pressButton(button)
-                    } else {
-                        coordinator.releaseButton(button)
+                    .onEnded { _ in
+                        if isPressed {
+                            isPressed = false
+                            coordinator.releaseButton(button)
+                        }
                     }
-                }
-        }
+            )
     }
 }

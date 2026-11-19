@@ -99,6 +99,8 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
     private var lastSteerLogState: String = ""
     private var lastThrottleState: Bool = false
     private var lastBrakeState: Bool = false
+    private var lastSteerLeftState: Bool = false
+    private var lastSteerRightState: Bool = false
 
     // System-wide Performance Fix: Cache frontmost app via NSWorkspace notifications
     // Eliminates 50Hz synchronous Mach IPC roundtrips to WindowServer!
@@ -230,52 +232,28 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
             }
         } else {
             // Arcade Steering (Asphalt & Fast Racers):
-            // Ultra-responsive:
-            // - Above 0.15 effective tilt (~6° handheld): Full solid hold for cornering & drifts!
-            // - Between 0.04 and 0.15 effective tilt (~2°-6° handheld): Smooth pulse for line corrections
-            // - Below 0.04: Centered deadzone
-            if steer < -0.15 {
-                // Hard Left Turn (Solid hold for full cornering & drifts)
-                postKey(keyLeft, down: true)
-                postKey(keyLeftArrow, down: true)
-                postKey(keyRight, down: false)
-                postKey(keyRightArrow, down: false)
-            } else if steer < -0.04 {
-                // Gentle Left Turn (Smooth pulse)
-                pulseKey(keyLeft, dutyCycle: Double(abs(steer) * 4.0), period: 0.04)
-                pulseKey(keyLeftArrow, dutyCycle: Double(abs(steer) * 4.0), period: 0.04)
-                postKey(keyRight, down: false)
-                postKey(keyRightArrow, down: false)
-            } else if steer > 0.15 {
-                // Hard Right Turn (Solid hold for full cornering & drifts)
-                postKey(keyRight, down: true)
-                postKey(keyRightArrow, down: true)
-                postKey(keyLeft, down: false)
-                postKey(keyLeftArrow, down: false)
-            } else if steer > 0.04 {
-                // Gentle Right Turn (Smooth pulse)
-                pulseKey(keyRight, dutyCycle: Double(steer * 4.0), period: 0.04)
-                pulseKey(keyRightArrow, dutyCycle: Double(steer * 4.0), period: 0.04)
-                postKey(keyLeft, down: false)
-                postKey(keyLeftArrow, down: false)
-            } else {
-                // Centered deadzone: Release all steering keys immediately
-                postKey(keyLeft, down: false)
-                postKey(keyLeftArrow, down: false)
-                postKey(keyRight, down: false)
-                postKey(keyRightArrow, down: false)
+            // State-based solid keyboard hold for 100% responsiveness without frame drops
+            let isLeft = steer < -0.05
+            let isRight = steer > 0.05
+
+            if isLeft != lastSteerLeftState {
+                lastSteerLeftState = isLeft
+                postKey(keyLeft, down: isLeft)
+                postKey(keyLeftArrow, down: isLeft)
+            }
+
+            if isRight != lastSteerRightState {
+                lastSteerRightState = isRight
+                postKey(keyRight, down: isRight)
+                postKey(keyRightArrow, down: isRight)
             }
 
             // Diagnostic logging on steer state transition
             var currentSteerState = "CENTER"
-            if steer < -0.15 {
-                currentSteerState = "HARD_LEFT [A + LeftArrow DOWN]"
-            } else if steer < -0.04 {
-                currentSteerState = "PULSE_LEFT [A + LeftArrow PULSE]"
-            } else if steer > 0.15 {
-                currentSteerState = "HARD_RIGHT [D + RightArrow DOWN]"
-            } else if steer > 0.04 {
-                currentSteerState = "PULSE_RIGHT [D + RightArrow PULSE]"
+            if isLeft {
+                currentSteerState = "LEFT [A + LeftArrow DOWN]"
+            } else if isRight {
+                currentSteerState = "RIGHT [D + RightArrow DOWN]"
             }
 
             if currentSteerState != lastSteerLogState {
@@ -284,38 +262,30 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
             }
         }
 
-        // 2. Throttle Output
-        let isThrottle = throttleNorm > 0.10
+        // 2. Throttle Output (Edge-triggered state transition)
+        let isThrottle = throttleNorm > 0.08
         if isThrottle != lastThrottleState {
             lastThrottleState = isThrottle
-            let modeDesc = useMouseSteering ? "W [ETS2 Throttle]" : "W + UpArrow [Asphalt Throttle]"
-            EventLogger.shared.log("THROTTLE: \(isThrottle ? "PRESSED [\(modeDesc)]" : "RELEASED") (Val=\(String(format: "%.2f", throttleNorm)))")
+            if useMouseSteering {
+                postKey(keyThrottle, down: isThrottle)
+            } else {
+                postKey(keyThrottle, down: isThrottle)
+                postKey(keyUpArrow, down: isThrottle)
+            }
+            EventLogger.shared.log("THROTTLE: \(isThrottle ? "PRESSED" : "RELEASED") [\(useMouseSteering ? "W" : "W + UpArrow")] (Val=\(String(format: "%.2f", throttleNorm)))")
         }
 
-        if useMouseSteering {
-            // 🚛 ETS2 Mode: Pure 'W' (NO Spacebar! Spacebar engages ETS2 Parking Brake!)
-            postKey(keyThrottle, down: isThrottle)
-        } else {
-            // 🏎️ Arcade / Asphalt 8 Mode: 'W' + Up Arrow
-            postKey(keyThrottle, down: isThrottle)
-            postKey(keyUpArrow, down: isThrottle)
-        }
-
-        // 3. Brake Output
-        let isBrake = brakeNorm > 0.10
+        // 3. Brake Output (Edge-triggered state transition)
+        let isBrake = brakeNorm > 0.08
         if isBrake != lastBrakeState {
             lastBrakeState = isBrake
-            let modeDesc = useMouseSteering ? "S [ETS2 Brake]" : "S + DownArrow [Asphalt Brake/Drift]"
-            EventLogger.shared.log("BRAKE: \(isBrake ? "PRESSED [\(modeDesc)]" : "RELEASED") (Val=\(String(format: "%.2f", brakeNorm)))")
-        }
-
-        if useMouseSteering {
-            // 🚛 ETS2 Mode: Pure 'S' (CRITICAL FIX: NO Shift! Shift forces Gear Shift Up in ETS2!)
-            postKey(keyBrake, down: isBrake)
-        } else {
-            // 🏎️ Arcade / Asphalt 8 Mode: 'S' + Down Arrow (Drift is initiated by Brake while turning in Asphalt 8)
-            postKey(keyBrake, down: isBrake)
-            postKey(keyDownArrow, down: isBrake)
+            if useMouseSteering {
+                postKey(keyBrake, down: isBrake)
+            } else {
+                postKey(keyBrake, down: isBrake)
+                postKey(keyDownArrow, down: isBrake)
+            }
+            EventLogger.shared.log("BRAKE: \(isBrake ? "PRESSED" : "RELEASED") [\(useMouseSteering ? "S" : "S + DownArrow")] (Val=\(String(format: "%.2f", brakeNorm)))")
         }
     }
 
@@ -358,6 +328,8 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
     /// Instantaneous O(1) in-memory check without touching WindowServer Mach IPC!
     public func shouldInjectForFrontmostApp() -> Bool {
         guard enableGameOnlyFilter else { return true }
+        // Never block in Arcade / Asphalt mode
+        if !useMouseSteering { return true }
         focusLock.lock()
         let isBlocked = cachedFrontmostAppIsBlocked
         focusLock.unlock()
@@ -696,6 +668,11 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
 
     private func releaseAllKeys() {
         guard !areKeysReleased else { return }
+        lastSteerLeftState = false
+        lastSteerRightState = false
+        lastThrottleState = false
+        lastBrakeState = false
+
         let keys = [
             keyLeft, keyRight, keyThrottle, keyBrake, keyHorn, keyAirHorn,
             keyLeftArrow, keyRightArrow, keyUpArrow, keyDownArrow, keySpace, keyNitroN, keyShift,
