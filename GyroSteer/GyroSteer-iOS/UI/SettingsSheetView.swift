@@ -2,8 +2,8 @@
 //  SettingsSheetView.swift
 //  GyroSteer - iOS Transmitter UI
 //
-//  Configuration sheet for Game HUD Profiles, Haptics, steering curves,
-//  and connection endpoints.
+//  Hamburger menu configuration sheet for connection diagnostics,
+//  steering dynamics, haptics, transmission modes, and ETS2 key mappings.
 //
 
 import SwiftUI
@@ -29,7 +29,48 @@ public struct SettingsSheetView: View {
     public var body: some View {
         NavigationStack {
             Form {
-                // MARK: - Preferred Connection Method Section
+                // MARK: - 1. Live Connection & Technical Diagnostics
+                Section(header: Text("Live Connection & Technical Diagnostics")) {
+                    HStack {
+                        Label("Active Transport", systemImage: coordinator.activeTransport.iconName)
+                        Spacer()
+                        Text(coordinator.activeTransport.displayName)
+                            .fontWeight(.bold)
+                            .foregroundColor(coordinator.isConnected ? .green : .orange)
+                    }
+
+                    HStack {
+                        Label("Telemetry Latency", systemImage: "timer")
+                        Spacer()
+                        HStack(spacing: 6) {
+                            Circle()
+                                .fill(coordinator.latencyMs < 5.0 ? Color.green : (coordinator.latencyMs < 20.0 ? Color.yellow : Color.red))
+                                .frame(width: 8, height: 8)
+                            Text(String(format: "%.1f ms", coordinator.latencyMs))
+                                .font(.system(.body, design: .monospaced))
+                                .fontWeight(.bold)
+                        }
+                    }
+
+                    HStack {
+                        Label("Stream Frequency", systemImage: "waveform.path.ecg")
+                        Spacer()
+                        Text(String(format: "%.0f Hz", coordinator.currentHz))
+                            .font(.system(.body, design: .monospaced))
+                            .fontWeight(.bold)
+                            .foregroundColor(.cyan)
+                    }
+
+                    HStack {
+                        Label("Packets Transmitted", systemImage: "arrow.up.circle.fill")
+                        Spacer()
+                        Text("\(coordinator.packetsSentCount)")
+                            .font(.system(.body, design: .monospaced))
+                            .foregroundColor(.secondary)
+                    }
+                }
+
+                // MARK: - 2. Preferred Connection Method Section
                 Section(header: Text("Connection Method (Cable / Wi-Fi / Bluetooth)")) {
                     Picker("Preferred Transport", selection: Binding(
                         get: { coordinator.preferredConnection },
@@ -53,94 +94,7 @@ public struct SettingsSheetView: View {
                     .padding(.vertical, 2)
                 }
 
-                // MARK: - Game HUD Profile Section
-                Section(header: Text("Active Game HUD Profile")) {
-                    ForEach(GameHUDProfile.allCases) { profile in
-                        Button {
-                            coordinator.setProfile(profile)
-                        } label: {
-                            HStack(spacing: 12) {
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(profile.accentColor.opacity(0.18))
-                                        .frame(width: 44, height: 44)
-
-                                    Image(systemName: profile.iconName)
-                                        .font(.system(size: 20, weight: .bold))
-                                        .foregroundColor(profile.accentColor)
-                                }
-
-                                VStack(alignment: .leading, spacing: 3) {
-                                    HStack {
-                                        Text(profile.title)
-                                            .font(.system(size: 15, weight: .bold))
-                                            .foregroundColor(.primary)
-
-                                        if coordinator.activeHUDProfile == profile {
-                                            Text("ACTIVE")
-                                                .font(.system(size: 9, weight: .black, design: .monospaced))
-                                                .foregroundColor(.white)
-                                                .padding(.horizontal, 6)
-                                                .padding(.vertical, 2)
-                                                .background(Capsule().fill(profile.accentColor))
-                                        }
-                                    }
-
-                                    Text(profile.subtitle)
-                                        .font(.system(size: 11))
-                                        .foregroundColor(.secondary)
-                                }
-
-                                Spacer()
-
-                                if coordinator.activeHUDProfile == profile {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .font(.system(size: 20, weight: .bold))
-                                        .foregroundColor(profile.accentColor)
-                                }
-                            }
-                            .padding(.vertical, 4)
-                        }
-                    }
-                }
-
-                // MARK: - Cockpit Button Appearance
-                Section(header: Text("Cockpit Buttons Appearance")) {
-                    Picker("Button Display Style", selection: $coordinator.buttonDisplayMode) {
-                        ForEach(ButtonDisplayMode.allCases) { mode in
-                            Text(mode.title).tag(mode)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-
-                    Text(coordinator.buttonDisplayMode == .iconOnly
-                         ? "Minimal & Clean: Extra-large automotive icons (22-26pt) with zero text clutter."
-                         : "Detailed: Large icons paired with clear function labels.")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-
-                // MARK: - Tactile Haptic Engine Section
-                Section(header: Text("Tactile Haptic Engine")) {
-                    Toggle("Enable Haptic Feedback", isOn: $haptics.isEnabled)
-                        .tint(coordinator.activeHUDProfile.accentColor)
-
-                    if haptics.isEnabled {
-                        Toggle("Steering Center Detent", isOn: $haptics.enableCenterDetent)
-                            .tint(coordinator.activeHUDProfile.accentColor)
-                        Text("Generates a physical tactile notch in your hands whenever the steering passes through 0° center.")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-
-                        Toggle("Pedal Notch Ticks", isOn: $haptics.enablePedalNotches)
-                            .tint(coordinator.activeHUDProfile.accentColor)
-                        Text("Subtle mechanical clicks as you pull through throttle and brake travel, plus a solid clack at 100% floor.")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                }
-
-                // MARK: - Transmission Mode (Automatic vs Manual)
+                // MARK: - 3. Transmission Mode (Automatic vs Manual)
                 Section(header: Text("Transmission Mode (ETS2 Gearbox)")) {
                     Picker("Gearbox Mode", selection: Binding(
                         get: { coordinator.transmissionMode },
@@ -157,8 +111,8 @@ public struct SettingsSheetView: View {
                         .foregroundColor(.secondary)
                 }
 
-                // MARK: - Steering Dynamics Section
-                Section(header: Text("Steering Wheel Geometry")) {
+                // MARK: - 4. Steering Dynamics Section
+                Section(header: Text("Steering Wheel Geometry & Curves")) {
                     Picker("Max Lock Angle", selection: $motionManager.maxLockAngleDegrees) {
                         ForEach(ProtocolConstants.lockAngleOptionsDegrees, id: \.self) { angle in
                             Text("\(Int(angle))° (±\(Int(angle / 2))°)")
@@ -200,16 +154,61 @@ public struct SettingsSheetView: View {
                     }
                 }
 
-                // MARK: - Connection & Port Forwarding
-                Section(header: Text("Connection & USB Muxing")) {
-                    Text("Auto-discovery uses Bonjour over Wi-Fi and Apple USB-to-Lightning/USB-C network link.")
-                        .font(.caption)
-                        .foregroundColor(.gray)
+                // MARK: - 5. Tactile Haptic Engine Section
+                Section(header: Text("Tactile Haptic Engine")) {
+                    Toggle("Enable Haptic Feedback", isOn: $haptics.isEnabled)
+                        .tint(coordinator.activeHUDProfile.accentColor)
 
+                    if haptics.isEnabled {
+                        Toggle("Steering Center Detent", isOn: $haptics.enableCenterDetent)
+                            .tint(coordinator.activeHUDProfile.accentColor)
+                        Text("Generates a physical tactile notch in your hands whenever the steering passes through 0° center.")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+
+                        Toggle("Pedal Notch Ticks", isOn: $haptics.enablePedalNotches)
+                            .tint(coordinator.activeHUDProfile.accentColor)
+                        Text("Subtle mechanical clicks as you pull through throttle and brake travel, plus a solid clack at 100% floor.")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+
+                // MARK: - 6. ETS2 Controller Bindings Reference
+                Section(header: Text("ETS2 Default Key Bindings Reference")) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        keyRow(action: "Gear Up (+)", key: "Left Shift")
+                        keyRow(action: "Gear Down (-)", key: "Left Ctrl")
+                        keyRow(action: "Shift to Neutral (N)", key: "N")
+                        keyRow(action: "Retarder Increase (+)", key: "' (Quote)")
+                        keyRow(action: "Retarder Decrease (-)", key: "; (Semicolon)")
+                        keyRow(action: "Engine Brake Toggle", key: "B")
+                        keyRow(action: "Parking Brake / Handbrake", key: "Spacebar")
+                        keyRow(action: "Engine Start / Stop", key: "E")
+                        keyRow(action: "Enter / Toll / Ferry", key: "Return / Enter")
+                        keyRow(action: "Trailer Attach / Detach", key: "T")
+                        keyRow(action: "Cabin Interior Camera", key: "1")
+                        keyRow(action: "Camera Views 1-6", key: "1, 2, 3, 4, 5, 6")
+                        keyRow(action: "Route Advisor Modes", key: "F3")
+                        keyRow(action: "Map View / Zoom", key: "F5")
+                        keyRow(action: "World Map", key: "M")
+                        keyRow(action: "Cruise Control", key: "C")
+                        keyRow(action: "Horn & Air Horn", key: "H + N")
+                        keyRow(action: "Left / Right Blinker", key: "[ / ]")
+                        keyRow(action: "Hazard Warning Lights", key: "F")
+                        keyRow(action: "Windshield Wipers", key: "P")
+                        keyRow(action: "Headlights / High Beam", key: "L / K")
+                        keyRow(action: "Gearbox Auto / Sequential", key: "G")
+                    }
+                    .font(.caption)
+                }
+
+                // MARK: - 7. Manual Endpoint & Port Forwarding
+                Section(header: Text("Manual Connection Endpoint")) {
                     HStack {
                         Text("Manual Target IP")
                         Spacer()
-                        TextField("e.g. 127.0.0.1 or 192.168.1.50", text: $manualHost)
+                        TextField("e.g. 192.168.1.50", text: $manualHost)
                             .multilineTextAlignment(.trailing)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled()
@@ -237,7 +236,7 @@ public struct SettingsSheetView: View {
                     }
                 }
             }
-            .navigationTitle("GyroSteer Settings")
+            .navigationTitle("GyroSteer Controller Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -247,6 +246,18 @@ public struct SettingsSheetView: View {
                     .fontWeight(.bold)
                 }
             }
+        }
+    }
+
+    private func keyRow(action: String, key: String) -> some View {
+        HStack {
+            Text(action)
+                .foregroundColor(.primary)
+            Spacer()
+            Text(key)
+                .font(.system(.caption, design: .monospaced))
+                .fontWeight(.bold)
+                .foregroundColor(.cyan)
         }
     }
 }

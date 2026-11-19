@@ -2,8 +2,8 @@
 //  VerticalSlider.swift
 //  GyroSteer - iOS Transmitter UI
 //
-//  Proportional vertical touch slider for throttle and brake pedals
-//  with spring-to-zero release and tactile haptic feedback ticks.
+//  Premium automotive pedal slider for throttle and brake with
+//  neon glassmorphism borders, spring-to-zero release, and tactile haptics.
 //
 
 import SwiftUI
@@ -28,7 +28,7 @@ public struct VerticalSlider: View {
         subtitle: String,
         accentColor: Color,
         iconName: String,
-        displayMode: ButtonDisplayMode = .iconOnly,
+        displayMode: ButtonDisplayMode = .iconAndText,
         value: Binding<Float>
     ) {
         self.title = title
@@ -46,39 +46,57 @@ public struct VerticalSlider: View {
             let fillHeight = CGFloat(value) * height
 
             ZStack(alignment: .bottom) {
-                // Background Track
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color(white: 0.12))
+                // 1. Dark Glass Background Track with Neon Border
+                RoundedRectangle(cornerRadius: 22)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color(white: 0.12).opacity(0.85),
+                                Color(white: 0.05).opacity(0.95),
+                                Color.black.opacity(0.95)
+                            ],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
                     .overlay(
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(isTouching ? accentColor.opacity(0.6) : Color(white: 0.2), lineWidth: 2)
+                        RoundedRectangle(cornerRadius: 22)
+                            .stroke(
+                                accentColor.opacity(isTouching ? 0.95 : 0.65),
+                                lineWidth: isTouching ? 3 : 2
+                            )
+                            .shadow(color: accentColor.opacity(isTouching ? 0.8 : 0.4), radius: isTouching ? 12 : 6)
                     )
 
-                // Graduation Tick Marks
+                // 2. Subtle Tick Graduation Marks
                 VStack(spacing: 0) {
-                    ForEach(0..<10) { index in
+                    ForEach(0..<9) { index in
                         Spacer()
                         Rectangle()
-                            .fill(Color.white.opacity(index % 2 == 0 ? 0.25 : 0.12))
-                            .frame(width: index % 2 == 0 ? width * 0.4 : width * 0.25, height: 1.5)
+                            .fill(Color.white.opacity(index % 2 == 0 ? 0.20 : 0.08))
+                            .frame(width: index % 2 == 0 ? width * 0.45 : width * 0.25, height: 1.5)
                     }
                     Spacer()
                 }
 
-                // Active Fill
-                RoundedRectangle(cornerRadius: 16)
+                // 3. Fluid Neon Fill
+                RoundedRectangle(cornerRadius: 22)
                     .fill(
                         LinearGradient(
-                            colors: [accentColor.opacity(0.85), accentColor],
+                            colors: [
+                                accentColor.opacity(0.4),
+                                accentColor.opacity(0.75),
+                                accentColor
+                            ],
                             startPoint: .bottom,
                             endPoint: .top
                         )
                     )
                     .frame(height: fillHeight)
-                    .animation(.interactiveSpring(response: 0.12, dampingFraction: 0.8), value: fillHeight)
+                    .animation(.interactiveSpring(response: 0.10, dampingFraction: 0.82), value: fillHeight)
 
-                // Thumb Glow Indicator Line
-                if fillHeight > 0 {
+                // 4. White Glowing Horizon Line at Active Level
+                if fillHeight > 4 {
                     Rectangle()
                         .fill(Color.white)
                         .frame(height: 3)
@@ -86,32 +104,59 @@ public struct VerticalSlider: View {
                         .offset(y: -fillHeight + 1.5)
                 }
 
-                // Overlay Content (Labels & Icon)
-                VStack(spacing: 8) {
-                    // Top: Percentage readout
-                    Text("\(Int(value * 100))%")
-                        .font(.system(size: 20, weight: .bold, design: .monospaced))
-                        .foregroundColor(value > 0.05 ? .white : .gray)
-                        .padding(.top, 12)
+                // 5. Visual Pedal Labels & Automotive Icon
+                VStack(spacing: 6) {
+                    // Top: Live Percentage readout
+                    if isTouching || value > 0.02 {
+                        Text("\(Int(value * 100))%")
+                            .font(.system(size: 16, weight: .black, design: .monospaced))
+                            .foregroundColor(.white)
+                            .padding(.top, 10)
+                            .transition(.opacity)
+                    } else {
+                        // Resting upper indicator chevron
+                        Image(systemName: title == "BRAKE" ? "exclamationmark.circle" : "chevron.up.2")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundColor(accentColor.opacity(0.6))
+                            .padding(.top, 12)
+                    }
 
                     Spacer()
 
-                    // Bottom: Icon and Title
-                    Image(systemName: iconName)
-                        .font(.system(size: displayMode == .iconOnly ? 30 : 22, weight: .bold))
-                        .foregroundColor(.white)
-                        .padding(.bottom, displayMode == .iconOnly ? 16 : 0)
-
-                    if displayMode == .iconAndText {
-                        Text(title)
-                            .font(.system(size: 13, weight: .bold))
+                    // Center Primary Pedal Icon
+                    ZStack {
+                        if title == "BRAKE" {
+                            // Custom Authentic Brake Disc Symbol: ( ! )
+                            HStack(spacing: 2) {
+                                Text("(")
+                                    .font(.system(size: 26, weight: .light, design: .rounded))
+                                    .foregroundColor(.white)
+                                Image(systemName: "exclamationmark.circle.fill")
+                                    .font(.system(size: 20, weight: .black))
+                                    .foregroundColor(.white)
+                                Text(")")
+                                    .font(.system(size: 26, weight: .light, design: .rounded))
+                                    .foregroundColor(.white)
+                            }
+                        } else {
+                            // Authentic Accelerator Icon: Lightning bolt + double chevron
+                            VStack(spacing: 2) {
+                                Image(systemName: "chevron.up.2")
+                                    .font(.system(size: 14, weight: .black))
+                                Image(systemName: "bolt.fill")
+                                    .font(.system(size: 24, weight: .black))
+                            }
                             .foregroundColor(.white)
-
-                        Text(subtitle)
-                            .font(.system(size: 9, weight: .medium))
-                            .foregroundColor(.gray)
-                            .padding(.bottom, 12)
+                        }
                     }
+                    .shadow(color: accentColor.opacity(0.8), radius: isTouching ? 8 : 4)
+
+                    // Pedal Label
+                    Text(title)
+                        .font(.system(size: 11, weight: .black, design: .monospaced))
+                        .foregroundColor(.white)
+                        .shadow(color: .black, radius: 3)
+                        .padding(.bottom, 14)
                 }
             }
             .contentShape(Rectangle())
@@ -128,14 +173,14 @@ public struct VerticalSlider: View {
                     .onEnded { _ in
                         isTouching = false
                         // Spring back to 0.0 on release like a real physical pedal
-                        withAnimation(.easeOut(duration: 0.15)) {
+                        withAnimation(.easeOut(duration: 0.14)) {
                             value = 0.0
                         }
                         lastHapticThreshold = 0
                     }
             )
         }
-        .frame(width: 90)
+        .frame(width: 82)
     }
 
     private func checkHapticThreshold(_ current: Float) {

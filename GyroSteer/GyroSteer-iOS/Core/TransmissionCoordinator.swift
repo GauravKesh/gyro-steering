@@ -321,8 +321,10 @@ public final class TransmissionCoordinator: ObservableObject {
     public func pressButton(_ button: SteeringButtons) {
         activeButtons.insert(button)
         #if os(iOS)
-        if button == .gearUp || button == .gearDown {
+        if button == .gearUp || button == .gearDown || button == .neutral {
             HapticManager.shared.gearShift()
+        } else if button == .retarderUp || button == .retarderDown {
+            HapticManager.shared.pedalTick()
         } else if button == .engineStart {
             HapticManager.shared.engineIgnition()
         } else if button == .parkingBrake {

@@ -11,7 +11,7 @@ import XCTest
 final class SteeringPacketTests: XCTestCase {
 
     func testPacketExactSize() {
-        XCTAssertEqual(SteeringPacket.packetSize, 12, "Packet size must be exactly 12 bytes")
+        XCTAssertEqual(SteeringPacket.packetSize, 14, "Packet size must be exactly 14 bytes")
     }
 
     func testSerializationDeserializationRoundtrip() {
@@ -20,11 +20,11 @@ final class SteeringPacketTests: XCTestCase {
             steeringAngle: -0.732,
             throttle: 54321,
             brake: 12345,
-            buttons: [.leftBlinker, .horn, .gearUp]
+            buttons: [.leftBlinker, .horn, .gearUp, .retarderUp, .neutral]
         )
 
         let data = original.serializedData()
-        XCTAssertEqual(data.count, 12)
+        XCTAssertEqual(data.count, 14)
 
         guard let decoded = SteeringPacket(data: data) else {
             XCTFail("Failed to deserialize valid packet data")
@@ -35,7 +35,7 @@ final class SteeringPacketTests: XCTestCase {
         XCTAssertEqual(decoded.steeringAngle, -0.732, accuracy: 0.0001)
         XCTAssertEqual(decoded.throttle, 54321)
         XCTAssertEqual(decoded.brake, 12345)
-        XCTAssertEqual(decoded.buttons, [.leftBlinker, .horn, .gearUp])
+        XCTAssertEqual(decoded.buttons, [.leftBlinker, .horn, .gearUp, .retarderUp, .neutral])
     }
 
     func testNormalizedPedalInitializers() {
@@ -63,7 +63,7 @@ final class SteeringPacketTests: XCTestCase {
         )
 
         let data = packet.serializedData()
-        XCTAssertEqual(data.count, 12)
+        XCTAssertEqual(data.count, 14)
 
         // Byte 0-1: sequenceID little endian (0x02, 0x01)
         XCTAssertEqual(data[0], 0x02)

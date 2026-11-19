@@ -297,7 +297,15 @@ public struct DashboardView: View {
             ("Parking Brake", .parkingBrake),
             ("⏎ Enter", .enter),
             ("⚙️ Gearbox A/M (G)", .transmissionMode),
-            ("🎥 Camera View", .cameraView)
+            ("🎥 Camera View", .cameraView),
+            ("Retarder - (;)", .retarderDown),
+            ("Retarder + (')", .retarderUp),
+            ("Engine Brake (B)", .engineBrake),
+            ("Neutral (N)", .neutral),
+            ("Cabin View (1)", .cabinView),
+            ("Route Advisor (F3)", .routeAdvisor),
+            ("Map Zoom (F5)", .mapZoom),
+            ("World Map (M)", .worldMap)
         ]
 
         return LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
@@ -542,7 +550,7 @@ public struct DashboardView: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.white.opacity(0.12), lineWidth: 1)
                 )
-                .onChange(of: logger.recentLogs.count) { _ in
+                .onChange(of: logger.recentLogs.count) { _, _ in
                     if !logger.recentLogs.isEmpty {
                         proxy.scrollTo(logger.recentLogs.count - 1, anchor: .bottom)
                     }

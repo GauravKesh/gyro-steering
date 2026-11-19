@@ -30,7 +30,7 @@ struct TestRunnerMain {
         print("▶ Running SteeringPacket Serialization Tests...")
 
         // 1. Exact size test
-        assert(SteeringPacket.packetSize == 12, "Packet size must be 12 bytes")
+        assert(SteeringPacket.packetSize == 14, "Packet size must be 14 bytes")
 
         // 2. Round-trip test
         let original = SteeringPacket(
@@ -38,11 +38,11 @@ struct TestRunnerMain {
             steeringAngle: -0.875,
             throttle: 65000,
             brake: 32000,
-            buttons: [.leftBlinker, .horn, .gearUp, .recenter, .enter, .parkingBrake]
+            buttons: [.leftBlinker, .horn, .gearUp, .recenter, .enter, .parkingBrake, .neutral, .retarderUp]
         )
 
         let data = original.serializedData()
-        assert(data.count == 12, "Serialized data length must be 12")
+        assert(data.count == 14, "Serialized data length must be 14")
 
         guard let decoded = SteeringPacket(data: data) else {
             fatalError("Failed to deserialize packet")
@@ -52,7 +52,7 @@ struct TestRunnerMain {
         assert(abs(decoded.steeringAngle - (-0.875)) < 0.0001, "Steering angle mismatch")
         assert(decoded.throttle == 65000, "Throttle mismatch")
         assert(decoded.brake == 32000, "Brake mismatch")
-        assert(decoded.buttons == [.leftBlinker, .horn, .gearUp, .recenter, .enter, .parkingBrake], "Buttons mismatch")
+        assert(decoded.buttons == [.leftBlinker, .horn, .gearUp, .recenter, .enter, .parkingBrake, .neutral, .retarderUp], "Buttons mismatch")
 
         // 3. Sequence number ordering test
         assert(SteeringPacket.isSequenceNewer(2, than: 1), "2 > 1")

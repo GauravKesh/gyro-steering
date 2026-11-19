@@ -64,6 +64,14 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
     public var keyRespawn: CGKeyCode = 15       // 'R' (Respawn in Asphalt 8)
     public var keyEnter: CGKeyCode = 36         // Return / Enter (Toll booth, Ferry, Jobs, Gas stations)
     public var keyTransmissionMode: CGKeyCode = 5 // 'G' (Gearbox Switch Automatic / Sequential in ETS2)
+    public var keyRetarderDown: CGKeyCode = 41  // ';' (Retarder Decrease in ETS2)
+    public var keyRetarderUp: CGKeyCode = 39    // '\'' (Retarder Increase in ETS2)
+    public var keyEngineBrake: CGKeyCode = 11   // 'B' (Engine Brake Toggle in ETS2)
+    public var keyNeutral: CGKeyCode = 45       // 'N' (Shift to Neutral in ETS2)
+    public var keyCabinView: CGKeyCode = 18     // '1' (Interior Cockpit / Cabin View in ETS2)
+    public var keyRouteAdvisor: CGKeyCode = 99  // 'F3' (Route Advisor Display Modes in ETS2)
+    public var keyMapZoom: CGKeyCode = 96       // 'F5' (Route Advisor Navigation Map Zoom in ETS2)
+    public var keyWorldMap: CGKeyCode = 46      // 'M' (World Map in ETS2)
 
     // Camera View Cycling (1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 1)
     private var currentCameraIndex: Int = 1
@@ -300,13 +308,13 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
 
     private func postMouseDeltaX(_ dx: Int32) {
         guard dx != 0 else { return }
-        let currentLoc = CGEvent(source: nil)?.location ?? CGPoint(x: 500, y: 500)
-        let newLoc = CGPoint(x: currentLoc.x + CGFloat(dx), y: currentLoc.y)
+        let screen = NSScreen.main?.frame ?? CGRect(x: 0, y: 0, width: 1440, height: 900)
+        let centerPoint = CGPoint(x: screen.midX, y: screen.midY)
 
         guard let event = CGEvent(
             mouseEventSource: eventSource,
             mouseType: .mouseMoved,
-            mouseCursorPosition: newLoc,
+            mouseCursorPosition: centerPoint,
             mouseButton: .left
         ) else { return }
         event.setIntegerValueField(.mouseEventDeltaX, value: Int64(dx))
@@ -504,6 +512,60 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
             tapKey(keyTransmissionMode)
             EventLogger.shared.log("BUTTON: GEARBOX MODE SWITCH ('G' - Automatic / Sequential)")
         }
+
+        // Retarder Decrease (ETS2: ';' / keycode 41)
+        if !oldButtons.contains(.retarderDown) && newButtons.contains(.retarderDown) {
+            tapKey(keyRetarderDown)
+            EventLogger.shared.log("BUTTON: RETARDER DECREASE (;)")
+        }
+
+        // Retarder Increase (ETS2: '\'' / keycode 39)
+        if !oldButtons.contains(.retarderUp) && newButtons.contains(.retarderUp) {
+            tapKey(keyRetarderUp)
+            EventLogger.shared.log("BUTTON: RETARDER INCREASE (')")
+        }
+
+        // Engine Brake Toggle (ETS2: 'B' / keycode 11)
+        if !oldButtons.contains(.engineBrake) && newButtons.contains(.engineBrake) {
+            tapKey(keyEngineBrake)
+            EventLogger.shared.log("BUTTON: ENGINE BRAKE TOGGLE (B)")
+        }
+
+        // Shift to Neutral (ETS2: 'N' / keycode 45)
+        if !oldButtons.contains(.neutral) && newButtons.contains(.neutral) {
+            tapKey(keyNeutral)
+            EventLogger.shared.log("BUTTON: SHIFT TO NEUTRAL (N)")
+        }
+
+        // Cabin View (ETS2: '1' / keycode 18)
+        if !oldButtons.contains(.cabinView) && newButtons.contains(.cabinView) {
+            tapKey(keyCabinView)
+            EventLogger.shared.log("BUTTON: CABIN INTERIOR VIEW (1)")
+        }
+
+        // Route Advisor (ETS2: 'F3' / keycode 99)
+        if !oldButtons.contains(.routeAdvisor) && newButtons.contains(.routeAdvisor) {
+            tapKey(keyRouteAdvisor)
+            EventLogger.shared.log("BUTTON: ROUTE ADVISOR (F3)")
+        }
+
+        // Steering Calibration / Recenter (0°)
+        if !oldButtons.contains(.recenter) && newButtons.contains(.recenter) {
+            resetVirtualSteering()
+            EventLogger.shared.log("STEERING: RECENTERED (0°)")
+        }
+
+        // Map Zoom / Navigation View (ETS2: 'F5' / keycode 96)
+        if !oldButtons.contains(.mapZoom) && newButtons.contains(.mapZoom) {
+            tapKey(keyMapZoom)
+            EventLogger.shared.log("BUTTON: MAP ZOOM (F5)")
+        }
+
+        // World Map (ETS2: 'M' / keycode 46)
+        if !oldButtons.contains(.worldMap) && newButtons.contains(.worldMap) {
+            tapKey(keyWorldMap)
+            EventLogger.shared.log("BUTTON: WORLD MAP (M)")
+        }
     }
 
     // MARK: - CGEvent Dispatch
@@ -585,6 +647,12 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
         case 30: return 0x5D    // ']'
         case 36: return 0x0D    // '\r' Return / Enter
         case 5:  return 0x67    // 'g' (Gearbox Mode Automatic / Sequential)
+        case 41: return 0x3B    // ';' (Retarder Decrease)
+        case 39: return 0x27    // '\'' (Retarder Increase)
+        case 11: return 0x62    // 'b' (Engine Brake)
+        case 46: return 0x6D    // 'm' (World Map)
+        case 96: return nil     // F5 (Map Zoom)
+        case 99: return nil     // F3 (Route Advisor)
         default: return nil
         }
     }
@@ -594,7 +662,8 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
         let keys = [
             keyLeft, keyRight, keyThrottle, keyBrake, keyHorn, keyAirHorn,
             keyLeftArrow, keyRightArrow, keyUpArrow, keyDownArrow, keySpace, keyNitroN, keyShift,
-            keyGearUp, keyGearDown, keyParkingBrake, keyEngineStart, keyWipers, keyHazard, keyHighBeams, keyTrailerAttach, keyEnter, keyTransmissionMode
+            keyGearUp, keyGearDown, keyParkingBrake, keyEngineStart, keyWipers, keyHazard, keyHighBeams, keyTrailerAttach, keyEnter, keyTransmissionMode,
+            keyRetarderDown, keyRetarderUp, keyEngineBrake, keyNeutral, keyCabinView, keyRouteAdvisor, keyMapZoom, keyWorldMap
         ]
         for key in keys {
             postKey(key, down: false)

@@ -2,8 +2,9 @@
 //  SteeringWheelGauge.swift
 //  GyroSteer - iOS Transmitter UI
 //
-//  Real-time animated steering wheel visualizer with degree readout,
-//  turn indicators, and racing center marker.
+//  Premium authentic truck steering wheel visualizer inspired by
+//  Scania / Volvo cockpits, featuring live angle, lock readout,
+//  12 o'clock / 6 o'clock markers, spoke switches, and turn signal arrows.
 //
 
 import SwiftUI
@@ -16,6 +17,11 @@ public struct SteeringWheelGauge: View {
     let profile: GameHUDProfile
     let isLeftBlinkerActive: Bool
     let isRightBlinkerActive: Bool
+    var onSteerDrag: ((Float) -> Void)? = nil
+    var onCalibrate: (() -> Void)? = nil
+
+    @State private var dragStartAngle: Double = 0.0
+    @State private var isDragging: Bool = false
 
     public init(
         degrees: Double,
@@ -24,7 +30,9 @@ public struct SteeringWheelGauge: View {
         isCentered: Bool = false,
         profile: GameHUDProfile = .ets2,
         isLeftBlinkerActive: Bool = false,
-        isRightBlinkerActive: Bool = false
+        isRightBlinkerActive: Bool = false,
+        onSteerDrag: ((Float) -> Void)? = nil,
+        onCalibrate: (() -> Void)? = nil
     ) {
         self.degrees = degrees
         self.normalizedSteering = normalizedSteering
@@ -33,104 +41,248 @@ public struct SteeringWheelGauge: View {
         self.profile = profile
         self.isLeftBlinkerActive = isLeftBlinkerActive
         self.isRightBlinkerActive = isRightBlinkerActive
+        self.onSteerDrag = onSteerDrag
+        self.onCalibrate = onCalibrate
     }
 
     public var body: some View {
         ZStack {
-            // Outer Degree Arc Ticks
+            // Background Subtle Glow Ring
             Circle()
-                .stroke(Color.white.opacity(0.08), lineWidth: 4)
-                .frame(width: 220, height: 220)
+                .stroke(
+                    AngularGradient(
+                        colors: [
+                            Color.cyan.opacity(0.15),
+                            Color.blue.opacity(0.1),
+                            Color.orange.opacity(0.15),
+                            Color.cyan.opacity(0.15)
+                        ],
+                        center: .center
+                    ),
+                    lineWidth: 6
+                )
+                .frame(width: 236, height: 236)
+                .blur(radius: 4)
 
-            // Dynamic Angle Arc
+            // Dynamic Proportional Steering Arc
             Circle()
                 .trim(from: arcTrimStart, to: arcTrimEnd)
                 .stroke(
-                    AngularGradient(
-                        gradient: Gradient(colors: arcColors),
-                        center: .center
+                    LinearGradient(
+                        colors: [Color.cyan, Color.orange, Color.red],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
                     ),
-                    style: StrokeStyle(lineWidth: 6, lineCap: .round)
+                    style: StrokeStyle(lineWidth: 5, lineCap: .round)
                 )
-                .frame(width: 220, height: 220)
+                .frame(width: 234, height: 234)
                 .rotationEffect(.degrees(-90))
+                .shadow(color: Color.orange.opacity(0.6), radius: 6)
 
-            // The Rotating Steering Wheel
-            SteeringWheelShape()
-                .fill(Color(white: 0.16))
-                .overlay(
-                    SteeringWheelShape()
-                        .stroke(isCentered ? Color.green.opacity(0.8) : Color.white.opacity(0.3), lineWidth: 3)
-                )
-                .frame(width: 190, height: 190)
-                .overlay(
-                    // Top 12-o'clock racing center stripe
-                    Rectangle()
-                        .fill(centerStripeColor)
-                        .frame(width: 8, height: 18)
-                        .cornerRadius(2)
-                        .offset(y: -95)
-                )
-                .rotationEffect(.degrees(degrees))
-                .animation(.interactiveSpring(response: 0.08, dampingFraction: 0.85), value: degrees)
+            // The Realistic Rotating Truck Steering Wheel
+            ZStack {
+                // 1. Heavy Outer Rim with Leather Texture & Shading
+                Circle()
+                    .stroke(
+                        LinearGradient(
+                            colors: [
+                                Color(white: 0.28),
+                                Color(white: 0.12),
+                                Color(white: 0.08),
+                                Color(white: 0.20)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 24
+                    )
+                    .frame(width: 200, height: 200)
+                    .shadow(color: .black.opacity(0.8), radius: 10, x: 0, y: 4)
 
-            // Center Digital Telemetry Hub
-            VStack(spacing: 2) {
-                // Turn Indicator Icons
-                HStack(spacing: 14) {
-                    Image(systemName: "arrow.left")
-                        .font(.system(size: 15, weight: .black))
-                        .foregroundColor(isLeftBlinkerActive ? Color.green : (normalizedSteering < -0.05 ? profile.accentColor : .gray.opacity(0.25)))
-                        .shadow(color: isLeftBlinkerActive ? .green : .clear, radius: 6)
+                // Outer Rim Accent Bevel Line
+                Circle()
+                    .stroke(Color.white.opacity(0.18), lineWidth: 1.5)
+                    .frame(width: 218, height: 218)
 
-                    Image(systemName: isCentered ? "circle.circle.fill" : "circle.circle")
-                        .font(.system(size: 13))
-                        .foregroundColor(isCentered ? .green : .gray)
+                // Inner Rim Accent Bevel Line
+                Circle()
+                    .stroke(Color.white.opacity(0.12), lineWidth: 1.5)
+                    .frame(width: 178, height: 178)
 
-                    Image(systemName: "arrow.right")
-                        .font(.system(size: 15, weight: .black))
-                        .foregroundColor(isRightBlinkerActive ? Color.green : (normalizedSteering > 0.05 ? profile.accentColor : .gray.opacity(0.25)))
-                        .shadow(color: isRightBlinkerActive ? .green : .clear, radius: 6)
+                // 2. Wheel Spoke Structure (Left, Right, Bottom-V)
+                // Left Spoke with tactile switch texture
+                HStack {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(LinearGradient(colors: [Color(white: 0.24), Color(white: 0.14)], startPoint: .top, endPoint: .bottom))
+                            .frame(width: 44, height: 26)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.white.opacity(0.15), lineWidth: 1))
+
+                        // Spoke buttons texture
+                        HStack(spacing: 3) {
+                            ForEach(0..<3) { _ in
+                                Circle().fill(Color.white.opacity(0.3)).frame(width: 4, height: 4)
+                            }
+                        }
+                    }
+                    .offset(x: 20)
+
+                    Spacer()
+
+                    // Right Spoke with tactile switch texture
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(LinearGradient(colors: [Color(white: 0.24), Color(white: 0.14)], startPoint: .top, endPoint: .bottom))
+                            .frame(width: 44, height: 26)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.white.opacity(0.15), lineWidth: 1))
+
+                        // Spoke buttons texture
+                        HStack(spacing: 3) {
+                            ForEach(0..<3) { _ in
+                                Circle().fill(Color.white.opacity(0.3)).frame(width: 4, height: 4)
+                            }
+                        }
+                    }
+                    .offset(x: -20)
                 }
+                .frame(width: 200)
 
-                // Digital Degree Readout
-                Text(String(format: "%+.1f°", degrees))
-                    .font(.system(size: 26, weight: .bold, design: .monospaced))
-                    .foregroundColor(isCentered ? .green : .white)
+                // Bottom Dual-Spoke Support
+                VStack {
+                    Spacer()
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(LinearGradient(colors: [Color(white: 0.22), Color(white: 0.12)], startPoint: .top, endPoint: .bottom))
+                            .frame(width: 38, height: 38)
+                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.white.opacity(0.14), lineWidth: 1))
 
-                // Normalized Steering Readout
-                Text(String(format: "OUT: %+.2f", normalizedSteering))
-                    .font(.system(size: 11, weight: .medium, design: .monospaced))
-                    .foregroundColor(profile.accentColor)
+                        // Bottom Center Alignment Stripe (Yellow)
+                        RoundedRectangle(cornerRadius: 2)
+                            .fill(Color.orange)
+                            .frame(width: 14, height: 5)
+                            .offset(y: 12)
+                    }
+                    .offset(y: 10)
+                }
+                .frame(height: 200)
 
-                // Lock Angle Reference
-                Text("LOCK ±\(Int(maxLockAngle))°")
-                    .font(.system(size: 9, weight: .semibold))
-                    .foregroundColor(.gray)
+                // 3. Top 12 o'clock Racing / Truck Alignment Center Marker (Amber/Yellow)
+                VStack {
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(Color.orange)
+                        .frame(width: 10, height: 20)
+                        .shadow(color: Color.orange.opacity(0.8), radius: 4)
+                        .offset(y: -9)
+                    Spacer()
+                }
+                .frame(height: 200)
             }
-            .frame(width: 110, height: 110)
-            .background(Circle().fill(Color(white: 0.08)).shadow(radius: 6))
+            .rotationEffect(.degrees(degrees))
+            .animation(.interactiveSpring(response: 0.08, dampingFraction: 0.85), value: degrees)
+
+            // Center Digital Telemetry Cluster (Non-rotating, matches real truck digital hub)
+            ZStack {
+                // Hub Enclosure
+                Circle()
+                    .fill(
+                        RadialGradient(
+                            colors: [Color(white: 0.16), Color(white: 0.06), Color.black],
+                            center: .center,
+                            startRadius: 10,
+                            endRadius: 65
+                        )
+                    )
+                    .frame(width: 124, height: 124)
+                    .overlay(
+                        Circle()
+                            .stroke(
+                                LinearGradient(
+                                    colors: [Color.cyan.opacity(0.5), Color.white.opacity(0.15), Color.orange.opacity(0.4)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                ),
+                                lineWidth: 2
+                            )
+                    )
+                    .shadow(color: .black.opacity(0.9), radius: 8, x: 0, y: 3)
+
+                // Digital Cluster Content
+                VStack(spacing: 3) {
+                    // Top: Scania / Truck Griffin Crest Shield (Tappable to calibrate)
+                    Button {
+                        onCalibrate?()
+                    } label: {
+                        Image(systemName: "shield.checkered")
+                            .font(.system(size: 15, weight: .bold))
+                            .foregroundColor(isCentered ? .green : .blue.opacity(0.85))
+                            .shadow(color: isCentered ? .green.opacity(0.6) : .cyan.opacity(0.6), radius: 4)
+                            .padding(.top, 3)
+                    }
+                    .buttonStyle(.plain)
+
+                    // Middle: Left & Right Turn Signal Arrows with CALIBRATE Button in between
+                    HStack(spacing: 8) {
+                        Image(systemName: "arrow.left")
+                            .font(.system(size: 13, weight: .black))
+                            .foregroundColor(isLeftBlinkerActive ? Color.orange : Color.gray.opacity(0.25))
+                            .shadow(color: isLeftBlinkerActive ? Color.orange.opacity(0.9) : Color.clear, radius: 5)
+
+                        // Calibration Button right between left and right arrows
+                        Button {
+                            onCalibrate?()
+                        } label: {
+                            HStack(spacing: 3) {
+                                Image(systemName: "scope")
+                                    .font(.system(size: 10, weight: .black))
+                                Text("CAL")
+                                    .font(.system(size: 9, weight: .black, design: .monospaced))
+                            }
+                            .foregroundColor(isCentered ? Color.green : Color.cyan)
+                            .padding(.horizontal, 7)
+                            .padding(.vertical, 3)
+                            .background(
+                                Capsule()
+                                    .fill(Color.black.opacity(0.75))
+                                    .overlay(
+                                        Capsule()
+                                            .stroke(isCentered ? Color.green.opacity(0.8) : Color.cyan.opacity(0.8), lineWidth: 1.2)
+                                    )
+                                    .shadow(color: (isCentered ? Color.green : Color.cyan).opacity(0.4), radius: 4)
+                            )
+                        }
+                        .buttonStyle(.plain)
+
+                        Image(systemName: "arrow.right")
+                            .font(.system(size: 13, weight: .black))
+                            .foregroundColor(isRightBlinkerActive ? Color.orange : Color.gray.opacity(0.25))
+                            .shadow(color: isRightBlinkerActive ? Color.orange.opacity(0.9) : Color.clear, radius: 5)
+                    }
+
+                    // Large Digital Angle Readout (Tap to calibrate/recenter)
+                    Button {
+                        onCalibrate?()
+                    } label: {
+                        Text(String(format: "%d°", Int(round(degrees))))
+                            .font(.system(size: 23, weight: .black, design: .monospaced))
+                            .foregroundColor(isCentered ? Color.green : Color.white)
+                            .shadow(color: isCentered ? Color.green.opacity(0.6) : Color.clear, radius: 6)
+                    }
+                    .buttonStyle(.plain)
+
+                    // Output Percentage
+                    Text(String(format: "OUT: %+.2f", normalizedSteering))
+                        .font(.system(size: 10, weight: .black, design: .monospaced))
+                        .foregroundColor(Color.orange)
+
+                    // Steering Lock
+                    Text("LOCK ±\(Int(maxLockAngle))°")
+                        .font(.system(size: 8, weight: .bold, design: .monospaced))
+                        .foregroundColor(Color.gray.opacity(0.75))
+                        .padding(.bottom, 2)
+                }
+            }
         }
         .frame(width: 240, height: 240)
-    }
-
-    private var arcColors: [Color] {
-        switch profile {
-        case .ets2:
-            return [.yellow, .orange, .red]
-        case .asphalt:
-            return [.cyan, .purple, .pink]
-        case .f1Sim:
-            return [.green, .yellow, .red]
-        }
-    }
-
-    private var centerStripeColor: Color {
-        switch profile {
-        case .ets2: return .orange
-        case .asphalt: return .pink
-        case .f1Sim: return .yellow
-        }
     }
 
     private var arcTrimStart: CGFloat {
@@ -147,30 +299,5 @@ public struct SteeringWheelGauge: View {
         } else {
             return 0.5
         }
-    }
-}
-
-/// Custom 3-Spoke Steering Wheel Graphic
-struct SteeringWheelShape: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        let center = CGPoint(x: rect.midX, y: rect.midY)
-        let outerRadius = rect.width / 2
-        let innerRadius = outerRadius * 0.72
-
-        // Outer Rim
-        path.addEllipse(in: CGRect(x: center.x - outerRadius, y: center.y - outerRadius, width: outerRadius * 2, height: outerRadius * 2))
-        path.addEllipse(in: CGRect(x: center.x - innerRadius, y: center.y - innerRadius, width: innerRadius * 2, height: innerRadius * 2))
-
-        // Left Spoke
-        path.addRect(CGRect(x: center.x - innerRadius, y: center.y - 8, width: innerRadius * 0.6, height: 16))
-
-        // Right Spoke
-        path.addRect(CGRect(x: center.x + (innerRadius * 0.4), y: center.y - 8, width: innerRadius * 0.6, height: 16))
-
-        // Bottom Spoke
-        path.addRect(CGRect(x: center.x - 8, y: center.y + (innerRadius * 0.4), width: 16, height: innerRadius * 0.6))
-
-        return path
     }
 }

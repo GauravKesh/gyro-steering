@@ -24,7 +24,6 @@ public struct SteeringButtons: OptionSet, Sendable, Hashable {
     public static let gearDown          = SteeringButtons(rawValue: 1 << 5)
     public static let cruiseControl     = SteeringButtons(rawValue: 1 << 6)
     public static let transmissionMode  = SteeringButtons(rawValue: 1 << 7)
-    public static let recenter          = SteeringButtons(rawValue: 1 << 7) // Alias for backwards compatibility
     public static let hazardLights      = SteeringButtons(rawValue: 1 << 8)
     public static let wipers            = SteeringButtons(rawValue: 1 << 9)
     public static let engineStart       = SteeringButtons(rawValue: 1 << 10)
@@ -43,6 +42,8 @@ public struct SteeringButtons: OptionSet, Sendable, Hashable {
     public static let cabinView         = SteeringButtons(rawValue: 1 << 20)
     public static let routeAdvisor      = SteeringButtons(rawValue: 1 << 21)
     public static let worldMap          = SteeringButtons(rawValue: 1 << 22)
+    public static let recenter          = SteeringButtons(rawValue: 1 << 23)
+    public static let mapZoom           = SteeringButtons(rawValue: 1 << 24)
 }
 
 /// Unified 14-Byte Binary Packet Struct
@@ -104,8 +105,8 @@ public struct SteeringPacket: Sendable, Equatable {
 
     // MARK: - Zero-Allocation Binary Serialization
 
-    /// Serializes this packet directly into a pre-allocated buffer of at least 12 bytes.
-    /// Returns the number of bytes written (always 12 on success, 0 on failure).
+    /// Serializes this packet directly into a pre-allocated buffer of at least 14 bytes.
+    /// Returns the number of bytes written (always 14 on success, 0 on failure).
     @discardableResult
     public func serialize(into buffer: UnsafeMutableRawBufferPointer) -> Int {
         guard buffer.count >= Self.packetSize else { return 0 }
@@ -130,37 +131,28 @@ public struct SteeringPacket: Sendable, Equatable {
         buffer.storeBytes(of: brakeLE, toByteOffset: offset, as: UInt16.self)
         offset += 2
 
-        buffer.storeBytes(of: buttonsLE, toByteOffset: offset, as: UInt16.self)
-        offset += 2
+        buffer.storeBytes(of: buttonsLE, toByteOffset: offset, as: UInt32.self)
+        offset += 4
 
         return offset
     }
 
     /// Borrows serialized bytes with zero heap allocation.
     public func withSerializedBytes<R>(_ body: (UnsafeRawBufferPointer) throws -> R) rethrows -> R {
-        var rawStorage = (
-            sequenceID.littleEndian,
-            steeringAngle.bitPattern.littleEndian,
-            throttle.littleEndian,
-            brake.littleEndian,
-            buttons.rawValue.littleEndian
+        // Build contiguous 14-byte stack array
+        var stackArray = (
+            UInt8(0), UInt8(0), UInt8(0), UInt8(0),
+            UInt8(0), UInt8(0), UInt8(0), UInt8(0),
+            UInt8(0), UInt8(0), UInt8(0), UInt8(0),
+            UInt8(0), UInt8(0)
         )
-
-        return try withUnsafeBytes(of: &rawStorage) { rawBuffer in
-            // Build contiguous 12-byte slice
-            var stackArray = (
-                UInt8(0), UInt8(0), UInt8(0), UInt8(0),
-                UInt8(0), UInt8(0), UInt8(0), UInt8(0),
-                UInt8(0), UInt8(0), UInt8(0), UInt8(0)
-            )
-            return try withUnsafeMutableBytes(of: &stackArray) { stackBuffer in
-                self.serialize(into: stackBuffer)
-                return try body(UnsafeRawBufferPointer(stackBuffer))
-            }
+        return try withUnsafeMutableBytes(of: &stackArray) { stackBuffer in
+            self.serialize(into: stackBuffer)
+            return try body(UnsafeRawBufferPointer(stackBuffer))
         }
     }
 
-    /// Encodes into standard Foundation Data (12 bytes)
+    /// Encodes into standard Foundation Data (14 bytes)
     public func serializedData() -> Data {
         var data = Data(count: Self.packetSize)
         data.withUnsafeMutableBytes { buffer in
@@ -171,9 +163,9 @@ public struct SteeringPacket: Sendable, Equatable {
 
     // MARK: - Binary Deserialization
 
-    /// Deserializes from a raw buffer pointer. Must contain at least 12 bytes.
+    /// Deserializes from a raw buffer pointer. Supports both 14-byte extended and 12-byte legacy packets.
     public init?(buffer: UnsafeRawBufferPointer) {
-        guard buffer.count >= Self.packetSize else { return nil }
+        guard buffer.count >= 12 else { return nil }
 
         var offset = 0
         let seqLE = buffer.loadUnaligned(fromByteOffset: offset, as: UInt16.self)
@@ -188,19 +180,23 @@ public struct SteeringPacket: Sendable, Equatable {
         let brakeLE = buffer.loadUnaligned(fromByteOffset: offset, as: UInt16.self)
         offset += 2
 
-        let buttonsLE = buffer.loadUnaligned(fromByteOffset: offset, as: UInt16.self)
-        offset += 2
+        if buffer.count >= 14 {
+            let buttonsLE = buffer.loadUnaligned(fromByteOffset: offset, as: UInt32.self)
+            self.buttons = SteeringButtons(rawValue: UInt32(littleEndian: buttonsLE))
+        } else {
+            let buttonsLE = buffer.loadUnaligned(fromByteOffset: offset, as: UInt16.self)
+            self.buttons = SteeringButtons(rawValue: UInt32(UInt16(littleEndian: buttonsLE)))
+        }
 
         self.sequenceID = UInt16(littleEndian: seqLE)
         self.steeringAngle = Float32(bitPattern: UInt32(littleEndian: angleBits))
         self.throttle = UInt16(littleEndian: throttleLE)
         self.brake = UInt16(littleEndian: brakeLE)
-        self.buttons = SteeringButtons(rawValue: UInt16(littleEndian: buttonsLE))
     }
 
     /// Deserializes from Foundation Data.
     public init?(data: Data) {
-        guard data.count >= Self.packetSize else { return nil }
+        guard data.count >= 12 else { return nil }
         self = data.withUnsafeBytes { buffer in
             Self(buffer: buffer)
         }!
