@@ -1,0 +1,20 @@
+# macOS system files
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# Xcode & Swift
+build/
+DerivedData/
+.build/
+*.xcuserstate
+project.xcworkspace/xcuserdata/
+*.xcuserdata
+*.xcscmblueprint
+*.moved-aside
+
+# Local environment & logs
+.env
+*.log
