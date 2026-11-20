@@ -45,6 +45,14 @@ public struct SteeringButtons: OptionSet, Sendable, Hashable {
     public static let recenter          = SteeringButtons(rawValue: 1 << 23)
     public static let mapZoom           = SteeringButtons(rawValue: 1 << 24)
     public static let arcadeProfile     = SteeringButtons(rawValue: 1 << 25)
+
+    // MARK: - ETS2 Route Advisor & Vehicle Terminal Actions
+    public static let advisorF1         = SteeringButtons(rawValue: 1 << 26) // F1 (Route Advisor Help / Pause)
+    public static let serviceF7         = SteeringButtons(rawValue: 1 << 27) // F7 (Vehicle Diagnostics / Tow Service)
+    public static let seatAdjustF4      = SteeringButtons(rawValue: 1 << 28) // F4 (Seat & Mirror Adjustment)
+    public static let jobInfoF6         = SteeringButtons(rawValue: 1 << 29) // F6 (Job / Freight Delivery Info)
+    public static let escapeKey         = SteeringButtons(rawValue: 1 << 30) // Escape (Cancel / Close Menu)
+    public static let freeCamera        = SteeringButtons(rawValue: 1 << 31) // Free Camera (0 key in ETS2 / Mouse Look)
 }
 
 /// Unified 14-Byte Binary Packet Struct

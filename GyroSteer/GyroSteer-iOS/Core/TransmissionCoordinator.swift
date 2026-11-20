@@ -57,6 +57,23 @@ public final class TransmissionCoordinator: ObservableObject {
         }
     }
 
+    // MARK: - Free Camera & Mouse Look State
+    public var isFreeCameraLookActive: Bool = false
+    public var cameraDeltaX: Float = 0.0
+    public var cameraDeltaY: Float = 0.0
+
+    public func sendCameraLook(dx: Float, dy: Float) {
+        isFreeCameraLookActive = true
+        cameraDeltaX += dx
+        cameraDeltaY += dy
+    }
+
+    public func endCameraLook() {
+        isFreeCameraLookActive = false
+        cameraDeltaX = 0.0
+        cameraDeltaY = 0.0
+    }
+
     // MARK: - Transmission Telemetry
 
     @Published public private(set) var sequenceID: UInt16 = 0
@@ -264,13 +281,30 @@ public final class TransmissionCoordinator: ObservableObject {
     private func sendNextPacket() {
         sequenceID &+= 1
 
-        let packet = SteeringPacket(
-            sequenceID: sequenceID,
-            steeringAngle: motionManager.normalizedSteering,
-            normalizedThrottle: throttle,
-            normalizedBrake: brake,
-            buttons: activeButtons
-        )
+        let packet: SteeringPacket
+        if isFreeCameraLookActive {
+            var camButtons = activeButtons
+            camButtons.insert(.freeCamera)
+            let clampedDy = Int16(max(-32767, min(32767, Int(cameraDeltaY))))
+            packet = SteeringPacket(
+                sequenceID: sequenceID,
+                steeringAngle: cameraDeltaX,
+                throttle: UInt16(bitPattern: clampedDy),
+                brake: 0,
+                buttons: camButtons
+            )
+            // Decay deltas after transmission
+            cameraDeltaX = 0
+            cameraDeltaY = 0
+        } else {
+            packet = SteeringPacket(
+                sequenceID: sequenceID,
+                steeringAngle: motionManager.normalizedSteering,
+                normalizedThrottle: throttle,
+                normalizedBrake: brake,
+                buttons: activeButtons
+            )
+        }
 
         #if os(iOS)
         let isEngineRunning = activeButtons.contains(.engineStart)

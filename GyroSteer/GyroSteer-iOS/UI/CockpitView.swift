@@ -18,6 +18,8 @@ import GyroSteerShared
 public struct CockpitView: View {
     @StateObject private var coordinator = TransmissionCoordinator()
     @State private var isShowingSettings = false
+    @State private var isShowingAdvisorModal = false
+    @State private var isShowingFreeCameraTrackpad = false
     @State private var currentCameraIndex: Int = 1
 
     public init() {}
@@ -77,6 +79,17 @@ public struct CockpitView: View {
                 }
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
+
+                // Floating Movable Free Camera Mousepad
+                if isShowingFreeCameraTrackpad {
+                    FreeCameraTrackpadView(coordinator: coordinator) {
+                        withAnimation {
+                            isShowingFreeCameraTrackpad = false
+                        }
+                    }
+                    .transition(.scale.combined(with: .opacity))
+                    .zIndex(100)
+                }
             }
         }
         .onAppear {
@@ -93,6 +106,9 @@ public struct CockpitView: View {
         }
         .sheet(isPresented: $isShowingSettings) {
             SettingsSheetView(coordinator: coordinator)
+        }
+        .sheet(isPresented: $isShowingAdvisorModal) {
+            RouteAdvisorModalView(coordinator: coordinator)
         }
     }
 
@@ -246,10 +262,49 @@ public struct CockpitView: View {
     // =========================================================================
 
     private var ets2DrivingHorizon: some View {
-        HStack(alignment: .center, spacing: 10) {
-            // --- LEFT ZONE: Brake Pedal + Left Control Zone ---
-            HStack(spacing: 8) {
-                // Large Vertical Brake Pedal (Far Left)
+        HStack(alignment: .center, spacing: 6) {
+            // --- LEFT ZONE: Top-Left Calibration + Left Turn Indicator + Brake Pedal + Left Control Zone ---
+            HStack(spacing: 6) {
+                // Outer Left Column: Top CAL button + Left Turn Indicator
+                VStack(spacing: 6) {
+                    // Dedicated Top-Left Calibration Button
+                    Button {
+                        coordinator.recenter()
+                    } label: {
+                        VStack(spacing: 2) {
+                            Image(systemName: "scope")
+                                .font(.system(size: 13, weight: .black))
+                            Text("CAL")
+                                .font(.system(size: 8, weight: .black, design: .monospaced))
+                            Text("0°")
+                                .font(.system(size: 7, weight: .bold, design: .monospaced))
+                                .opacity(0.75)
+                        }
+                        .foregroundColor(.white)
+                        .frame(width: 32, height: 42)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color.orange.opacity(0.22))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.orange, lineWidth: 1.2)
+                                        .shadow(color: Color.orange.opacity(0.6), radius: 4)
+                                )
+                        )
+                        .contentShape(Rectangle())
+                    }
+
+                    // 1. Dedicated Left Turn Indicator (Directly Below CAL on Left of Brake Pedal)
+                    turnIndicatorPedalSideButton(
+                        direction: .left,
+                        isActive: coordinator.activeButtons.contains(.leftBlinker) || coordinator.activeButtons.contains(.hazardLights)
+                    ) {
+                        coordinator.toggleButton(.leftBlinker)
+                    }
+                }
+                .frame(width: 32)
+
+                // 2. Large Vertical Brake Pedal
                 VerticalSlider(
                     title: "BRAKE",
                     subtitle: "PULL",
@@ -259,11 +314,11 @@ public struct CockpitView: View {
                     value: $coordinator.brake
                 )
 
-                // Left Control Zone: Gear DOWN, Retarder, Engine Brake, Parking Brake
+                // 3. Left Control Zone: Gear DOWN, Retarder, Engine Brake, Parking Brake
                 leftControlZone
             }
 
-            Spacer(minLength: 4)
+            Spacer(minLength: 2)
 
             // --- CENTRAL ZONE: Large Truck Steering Wheel ---
             SteeringWheelGauge(
@@ -279,14 +334,14 @@ public struct CockpitView: View {
                 }
             )
 
-            Spacer(minLength: 4)
+            Spacer(minLength: 2)
 
-            // --- RIGHT ZONE: Right Control Zone + Throttle Pedal ---
-            HStack(spacing: 8) {
-                // Right Control Zone: Gear UP, Neutral, Camera, Cruise, Horn
+            // --- RIGHT ZONE: Right Control Zone (Horn at bottom-left) + Throttle Pedal + Right Turn Indicator ---
+            HStack(spacing: 6) {
+                // 1. Right Control Zone: Gear UP, Neutral, Camera, Cruise, HORN (at bottom-left of Throttle)
                 rightControlZone
 
-                // Large Vertical Throttle Pedal (Far Right)
+                // 2. Large Vertical Throttle Pedal
                 VerticalSlider(
                     title: "THROTTLE",
                     subtitle: "PULL",
@@ -295,7 +350,54 @@ public struct CockpitView: View {
                     displayMode: coordinator.buttonDisplayMode,
                     value: $coordinator.throttle
                 )
+
+                // 3. Dedicated Right Turn Indicator (Directly on Right of Throttle Pedal)
+                turnIndicatorPedalSideButton(
+                    direction: .right,
+                    isActive: coordinator.activeButtons.contains(.rightBlinker) || coordinator.activeButtons.contains(.hazardLights)
+                ) {
+                    coordinator.toggleButton(.rightBlinker)
+                }
             }
+        }
+    }
+
+    private enum IndicatorDirection {
+        case left, right
+    }
+
+    private func turnIndicatorPedalSideButton(
+        direction: IndicatorDirection,
+        isActive: Bool,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: {
+            HapticManager.shared.blinkerTick()
+            action()
+        }) {
+            VStack(spacing: 6) {
+                Image(systemName: direction == .left ? "arrowtriangle.backward.fill" : "arrowtriangle.forward.fill")
+                    .font(.system(size: 20, weight: .black))
+                    .foregroundColor(isActive ? .green : Color.white.opacity(0.35))
+                    .shadow(color: isActive ? Color.green.opacity(0.9) : .clear, radius: 8)
+
+                Text(direction == .left ? "L\nE\nF\nT" : "R\nI\nG\nH\nT")
+                    .font(.system(size: 8, weight: .black, design: .monospaced))
+                    .foregroundColor(isActive ? .green : Color.white.opacity(0.45))
+                    .lineSpacing(2)
+            }
+            .frame(width: 32)
+            .frame(maxHeight: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(isActive ? Color.green.opacity(0.22) : Color(white: 0.10).opacity(0.85))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(isActive ? Color.green : Color.white.opacity(0.18), lineWidth: isActive ? 2 : 1)
+                            .shadow(color: isActive ? Color.green.opacity(0.8) : .clear, radius: 6)
+                    )
+            )
+            .contentShape(Rectangle())
         }
     }
 
@@ -494,42 +596,74 @@ public struct CockpitView: View {
                 .contentShape(Rectangle())
             }
 
-            // 3. Camera Switch with Live View Indicator
-            Button {
-                currentCameraIndex = (currentCameraIndex % 6) + 1
-                coordinator.pressButton(.cameraView)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
-                    coordinator.releaseButton(.cameraView)
+            // 3. Camera Module (Camera Cycle 1..6 + FREE CAM Trackpad 0)
+            HStack(spacing: 4) {
+                // Camera Cycle (1..6)
+                Button {
+                    currentCameraIndex = (currentCameraIndex % 6) + 1
+                    coordinator.pressButton(.cameraView)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
+                        coordinator.releaseButton(.cameraView)
+                    }
+                } label: {
+                    ZStack(alignment: .topTrailing) {
+                        VStack(spacing: 2) {
+                            Image(systemName: "camera.fill")
+                                .font(.system(size: 13, weight: .bold))
+                            Text("CAM")
+                                .font(.system(size: 7, weight: .black, design: .monospaced))
+                        }
+                        .foregroundColor(.white)
+                        .frame(width: 47, height: 38)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color(white: 0.12).opacity(0.85))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.cyan.opacity(0.7), lineWidth: 1.2)
+                                )
+                        )
+
+                        Text("\(currentCameraIndex)")
+                            .font(.system(size: 8, weight: .black, design: .monospaced))
+                            .foregroundColor(.black)
+                            .frame(width: 13, height: 13)
+                            .background(Circle().fill(Color.cyan))
+                            .offset(x: -2, y: 2)
+                    }
                 }
-            } label: {
-                ZStack(alignment: .topTrailing) {
+
+                // FREE CAM Trackpad Toggle Button
+                Button {
+                    HapticManager.shared.buttonTap()
+                    coordinator.pressButton(.freeCamera)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
+                        coordinator.releaseButton(.freeCamera)
+                    }
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                        isShowingFreeCameraTrackpad.toggle()
+                    }
+                } label: {
                     VStack(spacing: 2) {
-                        Image(systemName: "camera.fill")
-                            .font(.system(size: 16, weight: .bold))
-                        Text("CAMERA")
+                        Image(systemName: isShowingFreeCameraTrackpad ? "hand.draw.fill" : "viewfinder.circle.fill")
+                            .font(.system(size: 13, weight: .bold))
+                        Text("FREE")
                             .font(.system(size: 7, weight: .black, design: .monospaced))
                     }
-                    .foregroundColor(.white)
-                    .frame(width: 98, height: 38)
+                    .foregroundColor(isShowingFreeCameraTrackpad ? .black : .white)
+                    .frame(width: 47, height: 38)
                     .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color(white: 0.12).opacity(0.85))
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(isShowingFreeCameraTrackpad ? Color.cyan : Color(white: 0.12).opacity(0.85))
                             .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.cyan.opacity(0.7), lineWidth: 1.2)
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.cyan, lineWidth: isShowingFreeCameraTrackpad ? 1.5 : 1.2)
+                                    .shadow(color: isShowingFreeCameraTrackpad ? Color.cyan.opacity(0.8) : .clear, radius: 6)
                             )
                     )
-                    .contentShape(Rectangle())
-
-                    // Camera Number Badge (1..6)
-                    Text("\(currentCameraIndex)")
-                        .font(.system(size: 8, weight: .black, design: .monospaced))
-                        .foregroundColor(.black)
-                        .frame(width: 14, height: 14)
-                        .background(Circle().fill(Color.cyan))
-                        .offset(x: -4, y: 3)
                 }
             }
+            .frame(width: 98, height: 38)
 
             // 4. Cruise Control Lock
             let isCruiseActive = coordinator.activeButtons.contains(.cruiseControl)
@@ -556,23 +690,28 @@ public struct CockpitView: View {
                 .contentShape(Rectangle())
             }
 
-            // 5. Dual Horn (Standard Horn 'H' + Air Horn 'N')
+            // 5. Dual Horn (Standard Horn 'H' + Air Horn 'N') - Directly at bottom-left of Throttle
             InstantHoldButton(button: .horn, coordinator: coordinator) {
                 VStack(spacing: 2) {
-                    Image(systemName: "speaker.wave.3.fill")
-                        .font(.system(size: 16, weight: .bold))
-                    Text("HORN")
-                        .font(.system(size: 7, weight: .black, design: .monospaced))
+                    HStack(spacing: 4) {
+                        Image(systemName: "speaker.wave.3.fill")
+                            .font(.system(size: 15, weight: .black))
+                        Text("HORN")
+                            .font(.system(size: 9, weight: .black, design: .monospaced))
+                    }
+                    Text("H + N AIR")
+                        .font(.system(size: 6, weight: .bold, design: .monospaced))
+                        .opacity(0.7)
                 }
-                .foregroundColor(coordinator.activeButtons.contains(.horn) ? .black : .white)
-                .frame(width: 98, height: 38)
+                .foregroundColor(coordinator.activeButtons.contains(.horn) ? .white : Color.white.opacity(0.9))
+                .frame(width: 98, height: 42)
                 .background(
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(coordinator.activeButtons.contains(.horn) ? Color.purple : Color(white: 0.12).opacity(0.85))
+                        .fill(coordinator.activeButtons.contains(.horn) ? Color.purple : Color(red: 0.20, green: 0.12, blue: 0.32).opacity(0.9))
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(coordinator.activeButtons.contains(.horn) ? Color.purple : Color.cyan.opacity(0.7), lineWidth: 1.2)
-                                .shadow(color: coordinator.activeButtons.contains(.horn) ? Color.purple.opacity(0.8) : .clear, radius: 6)
+                                .stroke(coordinator.activeButtons.contains(.horn) ? Color.purple : Color.purple.opacity(0.8), lineWidth: 1.5)
+                                .shadow(color: coordinator.activeButtons.contains(.horn) ? Color.purple.opacity(0.8) : Color.purple.opacity(0.3), radius: 6)
                         )
                 )
                 .contentShape(Rectangle())
@@ -679,7 +818,33 @@ public struct CockpitView: View {
                 }
             }
 
-            // 7. Route Advisor (F3)
+            // 7. Route Advisor & Tow Service Terminal (F1 / F7)
+            Button {
+                HapticManager.shared.buttonTap()
+                coordinator.pressButton(.advisorF1)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
+                    coordinator.releaseButton(.advisorF1)
+                }
+                isShowingAdvisorModal = true
+            } label: {
+                HStack(spacing: 5) {
+                    Image(systemName: "wrench.and.screwdriver.fill")
+                        .font(.system(size: 13, weight: .black))
+                    Text("SERVICE (F1/F7)")
+                        .font(.system(size: 9, weight: .black, design: .monospaced))
+                }
+                .foregroundColor(.black)
+                .padding(.horizontal, 9)
+                .frame(height: 38)
+                .background(
+                    Capsule()
+                        .fill(Color.orange)
+                        .overlay(Capsule().stroke(Color.orange, lineWidth: 1.5))
+                        .shadow(color: Color.orange.opacity(0.8), radius: 6)
+                )
+            }
+
+            // 8. Route Advisor (F3)
             dockPillButton(
                 icon: "location.north.line.fill",
                 title: "ADVISOR (F3)",
@@ -705,7 +870,24 @@ public struct CockpitView: View {
                 }
             }
 
-            // 9. World Map (M)
+            // 9. Free Camera Trackpad Toggle (0)
+            dockPillButton(
+                icon: "hand.draw.fill",
+                title: "FREE CAM (0)",
+                isActive: isShowingFreeCameraTrackpad,
+                activeColor: .cyan
+            ) {
+                HapticManager.shared.buttonTap()
+                coordinator.pressButton(.freeCamera)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
+                    coordinator.releaseButton(.freeCamera)
+                }
+                withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                    isShowingFreeCameraTrackpad.toggle()
+                }
+            }
+
+            // 10. World Map (M)
             dockPillButton(
                 icon: "map.fill",
                 title: "MAP (M)",

@@ -72,6 +72,14 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
     public var keyRouteAdvisor: CGKeyCode = 99  // 'F3' (Route Advisor Display Modes in ETS2)
     public var keyMapZoom: CGKeyCode = 96       // 'F5' (Route Advisor Navigation Map Zoom in ETS2)
     public var keyWorldMap: CGKeyCode = 46      // 'M' (World Map in ETS2)
+    public var keyF1: CGKeyCode = 122          // 'F1' (Route Advisor Help / Pause in ETS2)
+    public var keyF4: CGKeyCode = 118          // 'F4' (Adjust Seat / Mirrors / Lights in ETS2)
+    public var keyF6: CGKeyCode = 97           // 'F6' (Job / Freight Info in ETS2)
+    public var keyF7: CGKeyCode = 98           // 'F7' (Vehicle Diagnostics / Tow Service in ETS2)
+    public var keyEscape: CGKeyCode = 53       // Escape (Cancel / Close Menu in ETS2)
+    public var keyFreeCamera: CGKeyCode = 29   // '0' (Free Fly Camera in ETS2)
+    public var keyFlyForward: CGKeyCode = 91   // Numpad 8 (Fly Forward in Free Camera)
+    public var keyFlyBackward: CGKeyCode = 87  // Numpad 5 (Fly Backward in Free Camera)
 
     // Camera View Cycling (1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 1)
     private var currentCameraIndex: Int = 1
@@ -214,6 +222,16 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
             }
         }
 
+        // 0. Free Camera / Virtual Mousepad Look Mode
+        if packet.buttons.contains(.freeCamera) {
+            let dx = Int32(packet.steeringAngle)
+            let dy = Int32(Int16(bitPattern: packet.throttle))
+            if dx != 0 || dy != 0 {
+                postMouseDelta(dx: dx, dy: dy)
+            }
+            return
+        }
+
         let rawSteer = packet.steeringAngle
         let steer = useMouseSteering ? rawSteer : max(-1.0, min(1.0, rawSteer * keyboardSteeringGain))
         let throttleNorm = packet.normalizedThrottle
@@ -289,8 +307,8 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
         }
     }
 
-    private func postMouseDeltaX(_ dx: Int32) {
-        guard dx != 0 else { return }
+    private func postMouseDelta(dx: Int32, dy: Int32) {
+        guard dx != 0 || dy != 0 else { return }
         let screen = NSScreen.main?.frame ?? CGRect(x: 0, y: 0, width: 1440, height: 900)
         let centerPoint = CGPoint(x: screen.midX, y: screen.midY)
 
@@ -301,9 +319,13 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
             mouseButton: .left
         ) else { return }
         event.setIntegerValueField(.mouseEventDeltaX, value: Int64(dx))
-        event.setIntegerValueField(.mouseEventDeltaY, value: 0)
+        event.setIntegerValueField(.mouseEventDeltaY, value: Int64(dy))
         event.post(tap: .cghidEventTap)
         event.post(tap: .cgSessionEventTap)
+    }
+
+    private func postMouseDeltaX(_ dx: Int32) {
+        postMouseDelta(dx: dx, dy: 0)
     }
 
     public func resetVirtualSteering() {
@@ -574,6 +596,42 @@ public final class KeyboardMouseEmulator: InputInjector, @unchecked Sendable {
         if !oldButtons.contains(.worldMap) && newButtons.contains(.worldMap) {
             tapKey(keyWorldMap)
             EventLogger.shared.log("BUTTON: WORLD MAP (M)")
+        }
+
+        // Route Advisor Help / Pause (ETS2: 'F1' / keycode 122)
+        if !oldButtons.contains(.advisorF1) && newButtons.contains(.advisorF1) {
+            tapKey(keyF1)
+            EventLogger.shared.log("BUTTON: ROUTE ADVISOR / PAUSE (F1)")
+        }
+
+        // Vehicle Diagnostics & Tow Service (ETS2: 'F7' / keycode 98)
+        if !oldButtons.contains(.serviceF7) && newButtons.contains(.serviceF7) {
+            tapKey(keyF7)
+            EventLogger.shared.log("BUTTON: VEHICLE SERVICE / TOW ASSISTANCE (F7)")
+        }
+
+        // Seat & Mirror Adjustment (ETS2: 'F4' / keycode 118)
+        if !oldButtons.contains(.seatAdjustF4) && newButtons.contains(.seatAdjustF4) {
+            tapKey(keyF4)
+            EventLogger.shared.log("BUTTON: SEAT & MIRROR ADJUST (F4)")
+        }
+
+        // Job & Freight Information (ETS2: 'F6' / keycode 97)
+        if !oldButtons.contains(.jobInfoF6) && newButtons.contains(.jobInfoF6) {
+            tapKey(keyF6)
+            EventLogger.shared.log("BUTTON: JOB / FREIGHT INFO (F6)")
+        }
+
+        // Escape Key (ETS2: Escape / keycode 53)
+        if !oldButtons.contains(.escapeKey) && newButtons.contains(.escapeKey) {
+            tapKey(keyEscape)
+            EventLogger.shared.log("BUTTON: ESCAPE (Close / Back)")
+        }
+
+        // Free Camera (ETS2: '0' / keycode 29)
+        if !oldButtons.contains(.freeCamera) && newButtons.contains(.freeCamera) {
+            tapKey(keyFreeCamera)
+            EventLogger.shared.log("BUTTON: FREE CAMERA TOGGLE (0)")
         }
     }
 
